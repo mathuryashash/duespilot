@@ -1,0 +1,84 @@
+{
+ "model": "nvidia/nemotron-3-super-120b-a12b",
+ "ran_at": "2026-10-19T19:50:28.328Z",
+ "seconds": 3.369,
+ "paypal_tools": "STUBBED (no creds)",
+ "stub_list_invoices_calls": 0,
+ "usage": {
+  "prompt": 1901,
+  "completion": 481
+ },
+ "score": 62,
+ "followed_mandate_every_round": true,
+ "tool_schema_valid_every_round": true,
+ "deal": {
+  "client_id": "haggler",
+  "currency": "USD",
+  "total_usd": 3200,
+  "deposit_pct": 40,
+  "deposit_usd": 1280,
+  "balance_usd": 1920,
+  "balance_net_days": 15,
+  "early_pay_discount_pct": 2,
+  "early_pay_window_days": 7,
+  "rounds": 2
+ },
+ "rounds": [
+  {
+   "round": 1,
+   "offer": {
+    "deposit_pct": 40,
+    "balance_net_days": 15,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 7,
+    "message": "Thank you for your proposal. To align with our risk policy given the client's reliability score, we require a 40% deposit and the remaining balance due within 15 days. We can offer an early payment discount of 0% within a 7-day window if that helps. Please let us know if these terms work for you."
+   },
+   "toolCalls": [
+    {
+     "name": "propose_terms",
+     "args": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 0,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To align with our risk policy given the client's reliability score, we require a 40% deposit and the remaining balance due within 15 days. We can offer an early payment discount of 0% within a 7-day window if that helps. Please let us know if these terms work for you."
+     }
+    }
+   ],
+   "violations": [],
+   "ap": {
+    "accept": false,
+    "message": "We need: 2% early-pay discount since net is under 30."
+   },
+   "raw": ""
+  },
+  {
+   "round": 2,
+   "offer": {
+    "deposit_pct": 40,
+    "balance_net_days": 15,
+    "early_pay_discount_pct": 2,
+    "early_pay_window_days": 7,
+    "message": "Thank you for your feedback. We can offer a 2% early‑pay discount if paid within 7 days, with a 40% deposit and the balance due in 15 days."
+   },
+   "toolCalls": [
+    {
+     "name": "propose_terms",
+     "args": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your feedback. We can offer a 2% early‑pay discount if paid within 7 days, with a 40% deposit and the balance due in 15 days."
+     }
+    }
+   ],
+   "violations": [],
+   "ap": {
+    "accept": true,
+    "message": "Accepted. Please send the deposit and balance invoices."
+   },
+   "raw": ""
+  }
+ ]
+}

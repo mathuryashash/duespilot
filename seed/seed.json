@@ -1,0 +1,542 @@
+{
+ "as_of": "2026-10-20",
+ "note": "SEEDED DEMO DATA. Fictional clients and history; not real PayPal records. Live invoices are created in the PayPal sandbox at demo time.",
+ "clients": [
+  {
+   "id": "prompt",
+   "name": "Maya Chen",
+   "company": "Brightline Labs",
+   "country": "US",
+   "email": "ap@brightline.example",
+   "personality": "Pays on or before due date; monthly retainer."
+  },
+  {
+   "id": "slow",
+   "name": "Derek Olsen",
+   "company": "Northfield Media",
+   "country": "US",
+   "email": "billing@northfield.example",
+   "personality": "Always pays, ~2 weeks late, needs a firm reminder."
+  },
+  {
+   "id": "haggler",
+   "name": "Priya Raman",
+   "company": "Kestrel Commerce",
+   "country": "US",
+   "email": "ap-agent@kestrel.example",
+   "personality": "Has an AP agent that renegotiates terms on every invoice; pays ~9-10 days late."
+  },
+  {
+   "id": "ghost",
+   "name": "Tom Becker",
+   "company": "Glimmer Apps",
+   "country": "US",
+   "email": "tom@glimmer.example",
+   "personality": "Stops replying; several invoices unpaid 60+ days past due."
+  },
+  {
+   "id": "disputer",
+   "name": "Lena Fischer",
+   "company": "Ardent Studio",
+   "country": "US",
+   "email": "finance@ardent.example",
+   "personality": "Pays eventually but disputes scope; one open dispute, one partial payment."
+  }
+ ],
+ "invoices": [
+  {
+   "id": "INV-1001",
+   "client_id": "prompt",
+   "currency": "USD",
+   "amount_usd": 1800.0,
+   "issued_on": "2026-04-22",
+   "due_on": "2026-05-07",
+   "paid_on": "2026-05-05",
+   "status": "PAID",
+   "paid_usd": 1800.0,
+   "reminders": []
+  },
+  {
+   "id": "INV-1002",
+   "client_id": "prompt",
+   "currency": "USD",
+   "amount_usd": 1800.0,
+   "issued_on": "2026-05-22",
+   "due_on": "2026-06-06",
+   "paid_on": "2026-06-05",
+   "status": "PAID",
+   "paid_usd": 1800.0,
+   "reminders": []
+  },
+  {
+   "id": "INV-1003",
+   "client_id": "prompt",
+   "currency": "USD",
+   "amount_usd": 1800.0,
+   "issued_on": "2026-06-22",
+   "due_on": "2026-07-07",
+   "paid_on": "2026-07-07",
+   "status": "PAID",
+   "paid_usd": 1800.0,
+   "reminders": []
+  },
+  {
+   "id": "INV-1004",
+   "client_id": "prompt",
+   "currency": "USD",
+   "amount_usd": 1800.0,
+   "issued_on": "2026-07-22",
+   "due_on": "2026-08-06",
+   "paid_on": "2026-08-03",
+   "status": "PAID",
+   "paid_usd": 1800.0,
+   "reminders": []
+  },
+  {
+   "id": "INV-1005",
+   "client_id": "prompt",
+   "currency": "USD",
+   "amount_usd": 1800.0,
+   "issued_on": "2026-08-22",
+   "due_on": "2026-09-06",
+   "paid_on": "2026-09-06",
+   "status": "PAID",
+   "paid_usd": 1800.0,
+   "reminders": []
+  },
+  {
+   "id": "INV-1006",
+   "client_id": "prompt",
+   "currency": "USD",
+   "amount_usd": 1800.0,
+   "issued_on": "2026-09-22",
+   "due_on": "2026-10-07",
+   "paid_on": "2026-10-06",
+   "status": "PAID",
+   "paid_usd": 1800.0,
+   "reminders": []
+  },
+  {
+   "id": "INV-1007",
+   "client_id": "prompt",
+   "currency": "USD",
+   "amount_usd": 1800.0,
+   "issued_on": "2026-10-08",
+   "due_on": "2026-10-23",
+   "paid_on": null,
+   "status": "UNPAID",
+   "paid_usd": 0,
+   "reminders": []
+  },
+  {
+   "id": "INV-1008",
+   "client_id": "slow",
+   "currency": "USD",
+   "amount_usd": 950.0,
+   "issued_on": "2026-04-25",
+   "due_on": "2026-05-25",
+   "paid_on": "2026-06-08",
+   "status": "PAID",
+   "paid_usd": 950.0,
+   "reminders": [
+    {
+     "sent_on": "2026-05-28",
+     "tone": "friendly"
+    },
+    {
+     "sent_on": "2026-06-04",
+     "tone": "firm"
+    }
+   ]
+  },
+  {
+   "id": "INV-1009",
+   "client_id": "slow",
+   "currency": "USD",
+   "amount_usd": 1200.0,
+   "issued_on": "2026-05-28",
+   "due_on": "2026-06-27",
+   "paid_on": "2026-07-15",
+   "status": "PAID",
+   "paid_usd": 1200.0,
+   "reminders": [
+    {
+     "sent_on": "2026-06-30",
+     "tone": "friendly"
+    },
+    {
+     "sent_on": "2026-07-07",
+     "tone": "firm"
+    }
+   ]
+  },
+  {
+   "id": "INV-1010",
+   "client_id": "slow",
+   "currency": "USD",
+   "amount_usd": 875.5,
+   "issued_on": "2026-07-01",
+   "due_on": "2026-07-31",
+   "paid_on": "2026-08-12",
+   "status": "PAID",
+   "paid_usd": 875.5,
+   "reminders": [
+    {
+     "sent_on": "2026-08-03",
+     "tone": "friendly"
+    },
+    {
+     "sent_on": "2026-08-10",
+     "tone": "firm"
+    }
+   ]
+  },
+  {
+   "id": "INV-1011",
+   "client_id": "slow",
+   "currency": "USD",
+   "amount_usd": 1320.0,
+   "issued_on": "2026-08-03",
+   "due_on": "2026-09-02",
+   "paid_on": "2026-09-18",
+   "status": "PAID",
+   "paid_usd": 1320.0,
+   "reminders": [
+    {
+     "sent_on": "2026-09-05",
+     "tone": "friendly"
+    },
+    {
+     "sent_on": "2026-09-12",
+     "tone": "firm"
+    }
+   ]
+  },
+  {
+   "id": "INV-1012",
+   "client_id": "slow",
+   "currency": "USD",
+   "amount_usd": 990.0,
+   "issued_on": "2026-09-04",
+   "due_on": "2026-10-04",
+   "paid_on": null,
+   "status": "UNPAID",
+   "paid_usd": 0,
+   "reminders": [
+    {
+     "sent_on": "2026-10-07",
+     "tone": "friendly"
+    },
+    {
+     "sent_on": "2026-10-14",
+     "tone": "firm"
+    },
+    {
+     "sent_on": "2026-10-25",
+     "tone": "final"
+    }
+   ]
+  },
+  {
+   "id": "INV-1013",
+   "client_id": "haggler",
+   "currency": "USD",
+   "amount_usd": 2400.0,
+   "issued_on": "2026-04-28",
+   "due_on": "2026-05-13",
+   "paid_on": "2026-05-21",
+   "status": "PAID",
+   "paid_usd": 2400.0,
+   "reminders": [
+    {
+     "sent_on": "2026-05-16",
+     "tone": "friendly"
+    }
+   ],
+   "note": "Asked for 50% now, rest net-30; settled 40/net-15"
+  },
+  {
+   "id": "INV-1014",
+   "client_id": "haggler",
+   "currency": "USD",
+   "amount_usd": 3100.0,
+   "issued_on": "2026-06-02",
+   "due_on": "2026-06-17",
+   "paid_on": "2026-06-29",
+   "status": "PAID",
+   "paid_usd": 3100.0,
+   "reminders": [
+    {
+     "sent_on": "2026-06-20",
+     "tone": "friendly"
+    },
+    {
+     "sent_on": "2026-06-27",
+     "tone": "firm"
+    }
+   ],
+   "note": "Requested 5% discount"
+  },
+  {
+   "id": "INV-1015",
+   "client_id": "haggler",
+   "currency": "USD",
+   "amount_usd": 2650.0,
+   "issued_on": "2026-07-07",
+   "due_on": "2026-07-22",
+   "paid_on": "2026-07-28",
+   "status": "PAID",
+   "paid_usd": 2650.0,
+   "reminders": [
+    {
+     "sent_on": "2026-07-25",
+     "tone": "friendly"
+    }
+   ]
+  },
+  {
+   "id": "INV-1016",
+   "client_id": "haggler",
+   "currency": "USD",
+   "amount_usd": 2900.0,
+   "issued_on": "2026-08-11",
+   "due_on": "2026-08-26",
+   "paid_on": "2026-09-07",
+   "status": "PAID",
+   "paid_usd": 2900.0,
+   "reminders": [
+    {
+     "sent_on": "2026-08-29",
+     "tone": "friendly"
+    },
+    {
+     "sent_on": "2026-09-05",
+     "tone": "firm"
+    }
+   ],
+   "note": "Paid after firm reminder"
+  },
+  {
+   "id": "INV-1017",
+   "client_id": "haggler",
+   "currency": "USD",
+   "amount_usd": 3200.0,
+   "issued_on": "2026-10-06",
+   "due_on": "2026-10-21",
+   "paid_on": null,
+   "status": "UNPAID",
+   "paid_usd": 0,
+   "reminders": [],
+   "note": "Open; AP agent requesting new terms"
+  },
+  {
+   "id": "INV-1018",
+   "client_id": "ghost",
+   "currency": "USD",
+   "amount_usd": 600.0,
+   "issued_on": "2026-04-30",
+   "due_on": "2026-05-15",
+   "paid_on": "2026-06-05",
+   "status": "PAID",
+   "paid_usd": 600.0,
+   "reminders": [
+    {
+     "sent_on": "2026-05-18",
+     "tone": "friendly"
+    },
+    {
+     "sent_on": "2026-05-25",
+     "tone": "firm"
+    }
+   ]
+  },
+  {
+   "id": "INV-1019",
+   "client_id": "ghost",
+   "currency": "USD",
+   "amount_usd": 750.0,
+   "issued_on": "2026-05-29",
+   "due_on": "2026-06-13",
+   "paid_on": null,
+   "status": "UNPAID",
+   "paid_usd": 0,
+   "reminders": [
+    {
+     "sent_on": "2026-06-16",
+     "tone": "friendly"
+    },
+    {
+     "sent_on": "2026-06-23",
+     "tone": "firm"
+    },
+    {
+     "sent_on": "2026-07-04",
+     "tone": "final"
+    },
+    {
+     "sent_on": "2026-07-28",
+     "tone": "final"
+    }
+   ],
+   "note": "No reply since June"
+  },
+  {
+   "id": "INV-1020",
+   "client_id": "ghost",
+   "currency": "USD",
+   "amount_usd": 680.0,
+   "issued_on": "2026-06-26",
+   "due_on": "2026-07-11",
+   "paid_on": null,
+   "status": "UNPAID",
+   "paid_usd": 0,
+   "reminders": [
+    {
+     "sent_on": "2026-07-14",
+     "tone": "friendly"
+    },
+    {
+     "sent_on": "2026-07-21",
+     "tone": "firm"
+    },
+    {
+     "sent_on": "2026-08-01",
+     "tone": "final"
+    }
+   ],
+   "note": "No reply"
+  },
+  {
+   "id": "INV-1021",
+   "client_id": "ghost",
+   "currency": "USD",
+   "amount_usd": 720.0,
+   "issued_on": "2026-07-24",
+   "due_on": "2026-08-08",
+   "paid_on": null,
+   "status": "UNPAID",
+   "paid_usd": 0,
+   "reminders": [
+    {
+     "sent_on": "2026-08-11",
+     "tone": "friendly"
+    },
+    {
+     "sent_on": "2026-08-18",
+     "tone": "firm"
+    },
+    {
+     "sent_on": "2026-08-29",
+     "tone": "final"
+    }
+   ]
+  },
+  {
+   "id": "INV-1022",
+   "client_id": "disputer",
+   "currency": "USD",
+   "amount_usd": 1500.0,
+   "issued_on": "2026-05-05",
+   "due_on": "2026-06-04",
+   "paid_on": "2026-06-06",
+   "status": "PAID",
+   "paid_usd": 1500.0,
+   "reminders": []
+  },
+  {
+   "id": "INV-1023",
+   "client_id": "disputer",
+   "currency": "USD",
+   "amount_usd": 2200.0,
+   "issued_on": "2026-06-09",
+   "due_on": "2026-07-09",
+   "paid_on": null,
+   "status": "DISPUTED",
+   "paid_usd": 0,
+   "reminders": [
+    {
+     "sent_on": "2026-07-12",
+     "tone": "friendly"
+    }
+   ],
+   "note": "Claims scope incomplete; PayPal case open (seeded label, not a real PayPal dispute)"
+  },
+  {
+   "id": "INV-1024",
+   "client_id": "disputer",
+   "currency": "USD",
+   "amount_usd": 1750.0,
+   "issued_on": "2026-07-14",
+   "due_on": "2026-08-13",
+   "paid_on": "2026-08-18",
+   "status": "PAID",
+   "paid_usd": 1750.0,
+   "reminders": [
+    {
+     "sent_on": "2026-08-16",
+     "tone": "friendly"
+    }
+   ]
+  },
+  {
+   "id": "INV-1025",
+   "client_id": "disputer",
+   "currency": "USD",
+   "amount_usd": 1900.0,
+   "issued_on": "2026-08-18",
+   "due_on": "2026-09-17",
+   "paid_on": null,
+   "status": "PARTIALLY_PAID",
+   "paid_usd": 950.0,
+   "reminders": [
+    {
+     "sent_on": "2026-09-20",
+     "tone": "friendly"
+    },
+    {
+     "sent_on": "2026-09-27",
+     "tone": "firm"
+    }
+   ],
+   "note": "Paid half, disputing revision count"
+  },
+  {
+   "id": "INV-1026",
+   "client_id": "disputer",
+   "currency": "USD",
+   "amount_usd": 1600.0,
+   "issued_on": "2026-09-22",
+   "due_on": "2026-10-22",
+   "paid_on": null,
+   "status": "UNPAID",
+   "paid_usd": 0,
+   "reminders": []
+  }
+ ],
+ "mandate": {
+  "freelancer": "Yash (solo dev, Bengaluru; bills US clients in USD)",
+  "currency": "USD",
+  "max_rounds": 3,
+  "deposit_pct_min": 25,
+  "deposit_pct_min_if_score_below_70": 40,
+  "balance_net_days_max": 30,
+  "balance_net_days_max_if_score_below_70": 15,
+  "early_pay_discount_pct_max": 3,
+  "early_pay_window_days_max": 7
+ },
+ "ap_policies": [
+  {
+   "client_id": "haggler",
+   "budget_cycle": "Pays vendors in a twice-monthly run (1st and 15th)",
+   "opening_ask": {
+    "deposit_pct": 20,
+    "balance_net_days": 30,
+    "early_pay_discount_pct": 0
+   },
+   "deposit_pct_max": 40,
+   "balance_net_days_min": 15,
+   "discount_pct_required_if_net_under_30": 2,
+   "always_counter_first_offer": true
+  }
+ ]
+}
