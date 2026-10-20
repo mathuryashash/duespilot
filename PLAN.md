@@ -126,6 +126,13 @@ Already cut: Render Workflows, Orders v2/JS SDK v6 deposit checkout, recurring s
 | Tue 11 Nov | Devpost write-up, screenshots, testing instructions (passcode + sandbox buyer login), APIMatic form; **save the draft**; check that Render instances are paid, not free | draft saved |
 | Wed 12 Nov | Final smoke on the hosted URL → **submit by 20:00 IST** | submitted ✓ (hard stop 13 Nov 01:30 IST) |
 
+### Schedule shift (21 Oct)
+The build sprint was pulled forward. On 21 Oct, slice 1 shipped: negotiate → approve → deposit + balance sandbox invoices → webhook handler / polling. This covers the 3 Nov webhook logic and the 4 Nov negotiation, both local only. The days that remain:
+- 22–30 Oct (≤45 min/day): pay one invoice as the buyer and check PAID via Refresh; add the intake route and UI (test 3 already passes); add passcode, per-IP rate limit and record-payment admin fallback; show the reminder ladder in the UI with an "Advance clock" button.
+- 31 Oct: Render paid web + Postgres (swap out the `data/state.json` file store), register the webhook, set `PAYPAL_WEBHOOK_ID`, and run a real verified PAID event. Start the AG trial.
+- 1–5 Nov: the expected-landing card, the AG dashboard polish, and the Studio agent (6 h timebox). 6–12 Nov stays as planned.
+Rules note: the public repo carries the 19–20 Oct prep history (spike/). That's allowed because it's inside the submission period, which started 1 Oct. The "first commit ≥ 31 Oct" item in the checklist was self-imposed.
+
 ## 7. Three demo moments
 
 1. **Chat to cash:** a brief becomes a real sandbox invoice with an early-pay rule and QR → the sandbox buyer pays → the verified webhook flips the dashboard to Paid live.

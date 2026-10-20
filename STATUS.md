@@ -1,12 +1,10 @@
-# STATUS — 20 Oct 2026
+# STATUS — 21 Oct 2026
 
-- **Plan and deadline:** we're building DuesPilot A′ (see `PLAN.md`). Submit by **12 Nov, 20:00 IST**. The hard deadline is 13 Nov, 01:30 IST.
-- **Done today:** studied PayPal's AG Grid starter project. Notes are in `ref/NOTES.md`. It uses plain REST calls to PayPal, with no toolkit. It has **no license file**, so we copy its patterns and don't paste its code. AG trial not started.
-- **Done today:** demo data in `seed/seed.json`: 5 clients and 26 invoices from April to October. The haggler client scores 62, which matches demo moment 2. 7 tests pass (`cd spike && npm test`), and the typecheck is clean.
-- **Done today:** live negotiation test with Nemotron Super and fake PayPal tools. It settled in 2 of 3 rounds: 40% deposit, the rest due in 15 days, 2% off if paid within 7 days. It kept to the freelancer's limits and filled in the tool fields correctly every round. Cost was about 2.4k tokens. The full transcript is in `spike/negotiation_transcript.json`.
-- **Watch out:** Nemotron skipped the optional step of checking past invoices. In the real app, the server should look those up itself rather than wait for the model to ask.
-- **Done today:** README draft in `app-readme-draft.md`. Its late-payment stat is sourced: Bonsai found 29% of freelance invoices were paid late. Also set up git with `.env*`, `node_modules` and the starter project's code excluded.
-- **Next (22 Oct, needs PayPal credentials):** run `spike.ts` with `RUN_LLM=1` to check that `list_invoices` really works 3 times out of 3.
-- **Blocked on you:** a PayPal developer account, a **US business** and a **US personal** sandbox account, and a sandbox REST app. Put the keys in `D:/hackathons/paypal-ai/.env`.
-- **Ask in the PayPal Discord:** the AG trial (does it last through 15 Dec, and can the key be public?), whether sandbox webhooks work reliably, whether judges can share a buyer login, whether Render can stay awake through 15 Dec, and **whether we may copy code from the starter project**, since it has no license.
-- **Don't start the AG Grid trial before 31 Oct.**
+- **Build slice 1 works end to end on localhost, against the real sandbox** (pulled forward from 31 Oct). Code is in `app/` (Next.js 16, AI SDK v4, AG Grid Community). The repo is public at https://github.com/mathuryashash/duespilot (MIT detected; secret scanning and push protection on).
+- **Live run:** Nemotron, acting for the freelancer, negotiated with the haggler policy: 40% deposit, balance net-15, 2% off within 5 days, agreed in 2 rounds (~2.1k tokens per run). Clicking Approve (pending id + hash) created and sent 2 real sandbox invoices to the sandbox buyer: **INV2-EBS2-CQKH-Q5SG-ZAQK** ($1280 deposit) and **INV2-EFE9-FL3H-BDW7-5RL2** ($1920 balance). Both are **UNPAID**, waiting for the user to pay one to test the Paid flow.
+- **Checked live:** a wrong hash gets 409, and a replay does nothing. An unsigned webhook gets 401. A simulated event that falsely claims "PAID $1" changes nothing, because we re-fetch the invoice from PayPal. A duplicate event.id is ignored. "Refresh from PayPal" re-fetches every invoice we track.
+- **Tests:** 36/36 pass (`cd app && npm test`, 9 files: the 8 planned + paypal.write). Typecheck and `next build` are clean. The browser bundle contains no secrets.
+- **Sandbox bug:** `conditional-rules` (early-pay discount) returns 500 for every request body we tried. The discount is now also written into the invoice terms, and a failed rule no longer blocks sending (tested). Ask in the Discord.
+- **Gotcha:** the dev shell had unrelated `PAYPAL_*` environment variables set, so `config()` now always lets the repo-root `.env` override them.
+- **Not done yet:** a real verified webhook. It needs a public URL (Render) and `PAYPAL_WEBHOOK_ID`. Until then, Paid is tracked by polling. Brief intake has code and a test but no UI or route. The reminder ladder is a pure function with no UI. No passcode or rate limit yet.
+- **Next:** pay one invoice as the buyer, then hit Refresh and confirm it shows PAID. Then Render, the webhook, passcode, rate limit, the intake UI, and the reminder ladder in the UI.
