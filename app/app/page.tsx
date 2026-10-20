@@ -15,7 +15,7 @@ const clientCols: ColDef[] = [
 ];
 const invCols: ColDef[] = [
   { field: 'id', flex: 1 }, { field: 'role', width: 100 }, { field: 'amount_usd', headerName: 'Amount $', width: 120 },
-  { field: 'status', width: 120 }, { field: 'updated_at', width: 220 },
+  { field: 'status', width: 120 }, { field: 'early_pay_rule', headerName: 'Early-pay rule', width: 130 }, { field: 'updated_at', width: 220 },
   { field: 'pay_link', headerName: 'Payer view', flex: 1, cellRenderer: (p: any) => (p.value ? <a href={p.value} target="_blank" rel="noreferrer">open</a> : '') },
 ];
 

@@ -1,5 +1,6 @@
 // Boot guard (BLOCKER 6): sandbox only, secrets server-side only.
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
+import { parseEnv } from 'node:util';
 import path from 'node:path';
 
 const SANDBOX = 'https://api-m.sandbox.paypal.com';
@@ -33,7 +34,8 @@ let cached: Config | undefined;
 export function config(): Config {
   if (!cached) {
     const f = path.resolve(process.cwd(), '..', '.env');
-    if (!process.env.PAYPAL_CLIENT_ID && existsSync(f)) process.loadEnvFile(f);
+    // Project .env wins over ambient shell vars (the dev shell may carry unrelated PAYPAL_* values).
+    if (existsSync(f)) Object.assign(process.env, parseEnv(readFileSync(f, 'utf8')));
     cached = loadConfig(process.env);
   }
   return cached;

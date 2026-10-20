@@ -29,29 +29,35 @@ export async function pp(method: string, p: string, body?: unknown, retried = fa
   return j;
 }
 
-export type InvoiceView = { id: string; status: string; amount_usd: number; number?: string; pay_link?: string };
+export type InvoiceView = { id: string; status: string; amount_usd: number; number?: string; pay_link?: string; early_pay_rule?: 'none' | 'ok' | 'failed' };
 export const view = (g: any): InvoiceView => ({
   id: g.id, status: g.status, amount_usd: Number(g.amount?.value ?? 0),
   number: g.detail?.invoice_number, pay_link: g.detail?.metadata?.recipient_view_url,
 });
 export const getInvoice = async (id: string) => view(await pp('GET', `/v2/invoicing/invoices/${encodeURIComponent(id)}`));
 
-export async function createAndSend(d: Draft): Promise<InvoiceView> {
-  const created = await pp('POST', '/v2/invoicing/invoices', {
-    detail: { currency_code: 'USD', invoice_date: d.invoice_date, note: d.note,
+type Call = (method: string, p: string, body?: unknown) => Promise<any>;
+
+// create -> (best-effort) early-pay conditional rule -> send. The sandbox returned 500 on every conditional-rules
+// body we tried (20 Oct), so the discount is also stated in terms_and_conditions and a rule failure never blocks send.
+export async function createAndSend(d: Draft, call: Call = pp): Promise<InvoiceView> {
+  const terms = d.discount_pct > 0 && d.discount_until ? `Early-pay: ${d.discount_pct}% off if paid by ${d.discount_until}.` : undefined;
+  const created = await call('POST', '/v2/invoicing/invoices', {
+    detail: { currency_code: 'USD', invoice_date: d.invoice_date, note: d.note, terms_and_conditions: terms,
       payment_term: d.due_date === d.invoice_date ? { term_type: 'DUE_ON_RECEIPT' } : { due_date: d.due_date } },
     invoicer: { name: { given_name: 'DuesPilot', surname: 'Freelancer' } },
     primary_recipients: [{ billing_info: { email_address: d.recipient_email } }],
     items: [{ name: d.item_name, quantity: '1', unit_amount: { currency_code: 'USD', value: d.amount_usd.toFixed(2) } }],
   });
   const id = String(created.href ?? created.id).split('/').pop()!;
-  if (d.discount_pct > 0 && d.discount_until) {
-    await pp('POST', `/v2/invoicing/invoices/${id}/conditional-rules`, { rules: [{
+  let early_pay_rule: InvoiceView['early_pay_rule'] = 'none';
+  if (terms) {
+    early_pay_rule = await call('POST', `/v2/invoicing/invoices/${id}/conditional-rules`, { rules: [{
       conditional_rule_type: 'EARLY_PAYMENT_DISCOUNT', conditional_rule_value_type: 'PERCENT', conditional_rule_value: String(d.discount_pct),
-      rule_expiry_terms: { rule_expiry_condition: 'SPECIFIC_DATE', condition_rule_end_date: d.discount_until } }] });
+      rule_expiry_terms: { rule_expiry_condition: 'SPECIFIC_DATE', condition_rule_end_date: d.discount_until } }] }).then(() => 'ok' as const, () => 'failed' as const);
   }
-  await pp('POST', `/v2/invoicing/invoices/${id}/send`, { send_to_invoicer: false, send_to_recipient: true });
-  return getInvoice(id);
+  await call('POST', `/v2/invoicing/invoices/${id}/send`, { send_to_invoicer: false, send_to_recipient: true });
+  return { ...view(await call('GET', `/v2/invoicing/invoices/${id}`)), early_pay_rule };
 }
 
 // Webhook postback verification (BLOCKER 5). Needs PAYPAL_WEBHOOK_ID of a registered webhook.

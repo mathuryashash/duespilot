@@ -3,7 +3,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import path from 'node:path';
 
 export type Pending = { id: string; kind: string; payload: unknown; hash: string; status: 'pending' | 'done' | 'failed'; created_at: string; result?: unknown };
-export type TrackedInvoice = { id: string; status: string; amount_usd: number; role: string; number?: string; pay_link?: string; negotiation_id?: string; updated_at?: string };
+export type TrackedInvoice = { id: string; status: string; amount_usd: number; role: string; number?: string; pay_link?: string; negotiation_id?: string; updated_at?: string; early_pay_rule?: string };
 export type State = {
   pending: Record<string, Pending>;
   invoices: Record<string, TrackedInvoice>;
