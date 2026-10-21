@@ -21,7 +21,10 @@ export const draftSchema = (domain: string) => z.object({
   discount_pct: z.number().min(0).max(20),
   discount_until: isoDate.nullable(),
   note: z.string().max(600),
+  // Optional line items (brief intake). When present they must sum to amount_usd.
+  items: z.array(z.object({ name: z.string().min(1).max(200), amount_usd: z.number().positive().max(10_000) })).min(1).max(10).optional(),
 }).superRefine((d, ctx) => {
+  if (d.items && Math.abs(d.items.reduce((s, i) => s + i.amount_usd, 0) - d.amount_usd) > 0.005) ctx.addIssue({ code: 'custom', path: ['items'], message: 'line items must sum to amount' });
   const due = days(d.invoice_date, d.due_date);
   if (!(due >= 0 && due <= 90)) ctx.addIssue({ code: 'custom', path: ['due_date'], message: 'due date must be 0..90 days after invoice date' });
   if ((d.discount_pct > 0) !== (d.discount_until !== null)) ctx.addIssue({ code: 'custom', path: ['discount_until'], message: 'discount needs an end date (and vice versa)' });

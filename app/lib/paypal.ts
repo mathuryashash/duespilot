@@ -1,6 +1,12 @@
 // Deterministic PayPal REST client (server only). Pattern after the paypaldev boilerplate (token cache, 401 re-mint),
 // re-typed. Write calls are only reachable from executors run by approve().
+import { randomUUID } from 'node:crypto';
 import { config, type Config } from './config';
+
+// Activity log: every PayPal write (non-GET) gets a PayPal-Request-Id (idempotency) and is logged with PayPal's debug id.
+export type WriteLog = { at: string; method: string; path: string; status: number; request_id: string; debug_id: string | null };
+let writeLogger: ((l: WriteLog) => void) | undefined;
+export const setWriteLogger = (f: typeof writeLogger) => { writeLogger = f; };
 import type { Draft } from './draft';
 
 let tok: { v: string; exp: number } | undefined;
@@ -16,23 +22,26 @@ async function token(c: Config) {
   return tok.v;
 }
 
-export async function pp(method: string, p: string, body?: unknown, retried = false): Promise<any> {
+export async function pp(method: string, p: string, body?: unknown, retried = false, requestId?: string): Promise<any> {
   const c = config();
-  const r = await fetch(c.paypalBase + p, {
-    method, body: body === undefined ? undefined : JSON.stringify(body),
-    headers: { Authorization: `Bearer ${await token(c)}`, 'Content-Type': 'application/json' },
-  });
-  if (r.status === 401 && !retried) { tok = undefined; return pp(method, p, body, true); }
+  const write = method !== 'GET' && !p.startsWith('/v1/notifications/');
+  const rid = write ? requestId ?? randomUUID() : undefined;
+  const headers: Record<string, string> = { Authorization: `Bearer ${await token(c)}`, 'Content-Type': 'application/json' };
+  if (rid) headers['PayPal-Request-Id'] = rid;
+  const r = await fetch(c.paypalBase + p, { method, body: body === undefined ? undefined : JSON.stringify(body), headers });
+  if (r.status === 401 && !retried) { tok = undefined; return pp(method, p, body, true, rid); }
+  if (rid) writeLogger?.({ at: new Date().toISOString(), method, path: p.split('?')[0], status: r.status, request_id: rid, debug_id: r.headers.get('paypal-debug-id') });
   const text = await r.text();
   const j = text ? JSON.parse(text) : {};
   if (!r.ok) throw new Error(`PayPal ${method} ${p.split('?')[0]} -> ${r.status} ${j.name ?? ''} ${j.details?.[0]?.issue ?? j.message ?? ''}`.trim());
   return j;
 }
 
-export type InvoiceView = { id: string; status: string; amount_usd: number; number?: string; pay_link?: string; early_pay_rule?: 'none' | 'ok' | 'failed' };
+export type InvoiceView = { id: string; status: string; amount_usd: number; number?: string; pay_link?: string; due_on?: string; early_pay_rule?: 'none' | 'ok' | 'failed' };
 export const view = (g: any): InvoiceView => ({
   id: g.id, status: g.status, amount_usd: Number(g.amount?.value ?? 0),
   number: g.detail?.invoice_number, pay_link: g.detail?.metadata?.recipient_view_url,
+  due_on: g.detail?.payment_term?.due_date ?? g.detail?.invoice_date,
 });
 export const getInvoice = async (id: string) => view(await pp('GET', `/v2/invoicing/invoices/${encodeURIComponent(id)}`));
 
@@ -47,7 +56,7 @@ export async function createAndSend(d: Draft, call: Call = pp): Promise<InvoiceV
       payment_term: d.due_date === d.invoice_date ? { term_type: 'DUE_ON_RECEIPT' } : { due_date: d.due_date } },
     invoicer: { name: { given_name: 'DuesPilot', surname: 'Freelancer' } },
     primary_recipients: [{ billing_info: { email_address: d.recipient_email } }],
-    items: [{ name: d.item_name, quantity: '1', unit_amount: { currency_code: 'USD', value: d.amount_usd.toFixed(2) } }],
+    items: (d.items ?? [{ name: d.item_name, amount_usd: d.amount_usd }]).map((i) => ({ name: i.name, quantity: '1', unit_amount: { currency_code: 'USD', value: i.amount_usd.toFixed(2) } })),
   });
   const id = String(created.href ?? created.id).split('/').pop()!;
   let early_pay_rule: InvoiceView['early_pay_rule'] = 'none';

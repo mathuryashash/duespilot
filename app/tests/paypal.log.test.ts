@@ -11,7 +11,7 @@ test('every PayPal write carries a PayPal-Request-Id and is logged with it + the
   globalThis.fetch = (async (url: string, init: any) => {
     sent.push({ url, headers: init.headers });
     if (url.endsWith('/v1/oauth2/token')) return new Response(JSON.stringify({ access_token: 't', expires_in: 3600 }));
-    return new Response(url.includes('/remind') ? '' : '{"id":"X"}', { status: url.includes('/remind') ? 204 : 200, headers: { 'paypal-debug-id': 'dbg123' } });
+    return new Response(url.includes('/remind') ? null : '{"id":"X"}', { status: url.includes('/remind') ? 204 : 200, headers: { 'paypal-debug-id': 'dbg123' } });
   }) as any;
   const logs: WriteLog[] = [];
   setWriteLogger((l) => logs.push(l));
