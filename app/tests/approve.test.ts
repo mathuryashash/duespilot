@@ -8,7 +8,7 @@ const drafts = [{ recipient_email: 'b@personal.example.com', currency: 'USD', it
 
 test('execution needs id + matching hash; wrong hash 409; replay is a no-op; executed payload == approved', async () => {
   const store = memoryStore();
-  const { id, hash } = createPending(store, 'send_invoices', { drafts });
+  const { id, hash } = await createPending(store, 'send_invoices', { drafts });
   const executed: unknown[] = [];
   const exec = async (p: unknown) => { executed.push(structuredClone(p)); return { invoice_ids: ['INV2-X'] }; };
 
@@ -28,10 +28,8 @@ test('execution needs id + matching hash; wrong hash 409; replay is a no-op; exe
 
 test('payload tampered in the store after creation fails the hash check', async () => {
   const store = memoryStore();
-  const { id, hash } = createPending(store, 'send_invoices', { drafts });
-  const s = store.read();
-  (s.pending[id].payload as any).drafts[0].amount_usd = 9999;
-  store.write(s);
+  const { id, hash } = await createPending(store, 'send_invoices', { drafts });
+  await store.update((s) => { (s.pending[id].payload as any).drafts[0].amount_usd = 9999; });
   let ran = false;
   const r = await approve(store, id, hash, async () => { ran = true; return {}; });
   assert.equal(r.status, 409);

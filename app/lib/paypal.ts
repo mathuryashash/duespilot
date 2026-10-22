@@ -37,9 +37,10 @@ export async function pp(method: string, p: string, body?: unknown, retried = fa
   return j;
 }
 
-export type InvoiceView = { id: string; status: string; amount_usd: number; number?: string; pay_link?: string; due_on?: string; early_pay_rule?: 'none' | 'ok' | 'failed' };
+export type InvoiceView = { id: string; status: string; amount_usd: number; paid_usd?: number; due_usd?: number; number?: string; pay_link?: string; due_on?: string; early_pay_rule?: 'none' | 'ok' | 'failed' };
 export const view = (g: any): InvoiceView => ({
   id: g.id, status: g.status, amount_usd: Number(g.amount?.value ?? 0),
+  paid_usd: Number(g.payments?.paid_amount?.value ?? 0), due_usd: Number(g.due_amount?.value ?? g.amount?.value ?? 0),
   number: g.detail?.invoice_number, pay_link: g.detail?.metadata?.recipient_view_url,
   due_on: g.detail?.payment_term?.due_date ?? g.detail?.invoice_date,
 });
