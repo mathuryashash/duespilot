@@ -1,0 +1,127 @@
+{
+ "id": "INV2-EBS2-CQKH-Q5SG-ZAQK",
+ "status": "SENT",
+ "detail": {
+  "currency_code": "USD",
+  "note": "Deposit agreed by DuesPilot negotiation (2 rounds). Sandbox demo.",
+  "category_code": "SHIPPABLE",
+  "invoice_number": "0008",
+  "invoice_date": "2026-10-20",
+  "payment_term": {
+   "term_type": "DUE_ON_RECEIPT",
+   "due_date": "2026-10-20"
+  },
+  "viewed_by_recipient": false,
+  "group_draft": false,
+  "metadata": {
+   "create_time": "2026-10-20T22:44:50Z",
+   "last_update_time": "2026-10-20T22:44:50Z",
+   "first_sent_time": "2026-10-20T22:44:51Z",
+   "last_sent_time": "2026-10-20T22:44:51Z",
+   "created_by_flow": "REGULAR_SINGLE",
+   "recipient_view_url": "https://www.sandbox.paypal.com/invoice/p/#EBS2CQKHQ5SGZAQK",
+   "invoicer_view_url": "https://www.sandbox.paypal.com/invoice/details/INV2-EBS2-CQKH-Q5SG-ZAQK",
+   "caller_type": "API_V2_INVOICE",
+   "spam_info": {}
+  },
+  "archived": false
+ },
+ "invoicer": {
+  "name": {
+   "given_name": "DuesPilot",
+   "surname": "Freelancer",
+   "full_name": "DuesPilot Freelancer"
+  }
+ },
+ "primary_recipients": [
+  {
+   "billing_info": {
+    "email_address": "buyer@personal.example.com"
+   }
+  }
+ ],
+ "items": [
+  {
+   "id": "ITEM-30G51071JV139692U",
+   "name": "Storefront redesign: 40% deposit",
+   "quantity": "1",
+   "unit_amount": {
+    "currency_code": "USD",
+    "value": "1280.00"
+   }
+  }
+ ],
+ "configuration": {
+  "tax_calculated_after_discount": false,
+  "tax_inclusive": false,
+  "allow_tip": false,
+  "allow_only_pay_by_bank": false,
+  "allow_vba_payments": false,
+  "save_item_for_future": true,
+  "template_id": "TEMP-89R386717B827113S"
+ },
+ "amount": {
+  "breakdown": {
+   "item_total": {
+    "currency_code": "USD",
+    "value": "1280.00"
+   },
+   "discount": {
+    "invoice_discount": {
+     "amount": {
+      "currency_code": "USD",
+      "value": "0.00"
+     }
+    },
+    "item_discount": {
+     "currency_code": "USD",
+     "value": "0.00"
+    }
+   },
+   "tax_total": {
+    "currency_code": "USD",
+    "value": "0.00"
+   }
+  },
+  "currency_code": "USD",
+  "value": "1280.00"
+ },
+ "due_amount": {
+  "currency_code": "USD",
+  "value": "1280.00"
+ },
+ "links": [
+  {
+   "href": "https://api.sandbox.paypal.com/v2/invoicing/invoices/INV2-EBS2-CQKH-Q5SG-ZAQK",
+   "rel": "self",
+   "method": "GET"
+  },
+  {
+   "href": "https://api.sandbox.paypal.com/v2/invoicing/invoices/INV2-EBS2-CQKH-Q5SG-ZAQK",
+   "rel": "replace",
+   "method": "PUT"
+  },
+  {
+   "href": "https://api.sandbox.paypal.com/v2/invoicing/invoices/INV2-EBS2-CQKH-Q5SG-ZAQK/cancel",
+   "rel": "cancel",
+   "method": "POST"
+  },
+  {
+   "href": "https://api.sandbox.paypal.com/v2/invoicing/invoices/INV2-EBS2-CQKH-Q5SG-ZAQK/remind",
+   "rel": "remind",
+   "method": "POST"
+  },
+  {
+   "href": "https://api.sandbox.paypal.com/v2/invoicing/invoices/INV2-EBS2-CQKH-Q5SG-ZAQK/payments",
+   "rel": "record-payment",
+   "method": "POST"
+  },
+  {
+   "href": "https://api.sandbox.paypal.com/v2/invoicing/invoices/INV2-EBS2-CQKH-Q5SG-ZAQK/generate-qr-code",
+   "rel": "qr-code",
+   "method": "GET"
+  }
+ ],
+ "unilateral": false,
+ "settings": {}
+}
