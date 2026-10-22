@@ -2,6 +2,7 @@
 // POLL_INTERVAL_MIN (default 2; 0 disables). Only unsettled invoices are fetched.
 export async function register() {
   if (process.env.NEXT_RUNTIME !== 'nodejs') return;
+  (await import('./lib/config')).loadRootEnv();
   const min = Number(process.env.POLL_INTERVAL_MIN ?? 2);
   if (!(min > 0)) return;
   const [{ startPoller }, { refreshInvoices }] = await Promise.all([import('./lib/poller'), import('./lib/server')]);

@@ -1,0 +1,44 @@
+# Render Blueprint (NOT deployed yet; provision on Render day). Paid Starter web service: free instances sleep and
+# have no disk. State lives in SQLite on the persistent disk below (DATABASE_PATH). The Postgres database is declared
+# so DATABASE_URL exists for the planned Postgres Store; the app does not read DATABASE_URL yet.
+services:
+  - type: web
+    name: duespilot
+    runtime: node
+    plan: starter
+    rootDir: app            # the repo root is still checked out, so ../seed/seed.json resolves
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    disk:
+      name: duespilot-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_VERSION
+        value: "22.16.0"     # node:sqlite needs >= 22.13
+      - key: PAYPAL_ENV
+        value: sandbox
+      - key: DATABASE_PATH
+        value: /var/data/duespilot.db
+      - key: POLL_INTERVAL_MIN
+        value: "2"
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+      - key: NEBIUS_API_KEY
+        sync: false
+      - key: DEMO_PASSCODE
+        sync: false
+      - key: DEMO_BUYER_EMAIL
+        sync: false
+      - key: PAYPAL_WEBHOOK_ID
+        sync: false          # set after registering https://<service>.onrender.com/api/webhooks/paypal
+      - key: DATABASE_URL
+        fromDatabase:
+          name: duespilot-db
+          property: connectionString
+databases:
+  - name: duespilot-db
+    plan: basic-256mb

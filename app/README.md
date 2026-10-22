@@ -23,12 +23,12 @@ Paths are relative to `app/`.
 | Invoicing v2 `…/{id}/conditional-rules` (early-pay discount, best effort: sandbox returns 500) | `lib/paypal.ts` | 2 ("2% off within 5 days"; also in the terms text) |
 | Invoicing v2 `…/{id}/send` | `lib/paypal.ts` | 1, 2 (after approval only) |
 | Invoicing v2 `…/{id}/remind` | `lib/executors.ts` (`send_reminder`), schedule in `lib/reminders.ts` | 3 reminder ladder |
-| Invoicing v2 `GET …/{id}` (re-fetch on webhook + Refresh) | `lib/paypal.ts`, `lib/webhook.ts`, `app/api/invoices/refresh/route.ts` | 1 Paid flips |
+| Invoicing v2 `GET …/{id}` (re-fetch on webhook, Refresh button, scheduled poll every `POLL_INTERVAL_MIN`) | `lib/paypal.ts`, `lib/refresh.ts`, `lib/webhook.ts`, `instrumentation.ts` | 1 Paid flips (SENT → PARTIALLY_PAID → PAID) |
 | Webhooks `verify-webhook-signature` + `INVOICING.INVOICE.PAID` | `lib/paypal.ts`, `app/api/webhooks/paypal/route.ts` | 1 (needs a public URL: planned on Render) |
 | `PayPal-Request-Id` on every write, logged with PayPal's debug id | `lib/paypal.ts` (`pp`), Activity log tab | all beats: audit trail |
 | Agent Toolkit `@paypal/agent-toolkit`, read-only allowlist; `list_disputes` | `lib/toolkit.ts`, `lib/disputes.ts`, `app/api/disputes/route.ts` | Disputes tab (summary only, no accept/refund) |
 | Invoicing v2 list + Transaction Search (read) | `lib/paypal.ts` (`liveSummary`) | Clients tab live counts |
-| Invoicing v2 `…/{id}/payments` (record payment, admin fallback) | *planned* | 1 (backup path) |
+| Payment fallback when no webhook arrives: the scheduled poll of `GET …/{id}` is the source of truth (no `record-payment` write needed) | `lib/refresh.ts`, `lib/poller.ts` | 1 (backup path) |
 | AG Grid Community (grids on every tab); AG Studio agent | `app/page.tsx`; Studio *planned* | 3 who-owes-what |
 | Nebius Token Factory (`nvidia/nemotron-3-super-120b-a12b`) via AI SDK v4 | `lib/llm.ts`, `lib/intake.ts`, `lib/reminders.ts` | 1 brief extraction, 2 AR agent, 3 reminder wording |
 
@@ -54,7 +54,9 @@ PayPal ─ webhook ─► verify signature → dedupe event.id → re-fetch invo
 - **Webhooks are verified.** Each one is signature-checked and deduped on `event.id`, and the invoice is re-fetched by ID so a tampered payload can't mark it Paid.
 - **Secrets stay on the server.** Never `NEXT_PUBLIC_`. The app refuses to boot unless `PAYPAL_ENV=sandbox` and the API base is the sandbox.
 - **Audit trail.** Every PayPal write is logged with its `PayPal-Request-Id`, HTTP status and PayPal debug id (Activity log tab).
-- **Open relay protection** (passcode, per-IP rate limit, Reset demo): *planned* before hosting.
+- **Not an open relay.** One shared demo passcode (`DEMO_PASSCODE`) gates every page and API route except the PayPal webhook (signature-verified instead) and `/api/health`. The httpOnly cookie holds an HMAC of the passcode, compared in constant time; without `DEMO_PASSCODE` a production server refuses every request (503). Per-IP token buckets (`lib/ratelimit.ts`, in memory): **LLM routes** (`/api/negotiate`, `/api/intake`, `/api/reminders` POST) burst 5 then 1 per 5 min; **PayPal routes** (approve, refresh) burst 10 then 1/min; **login** burst 5 then 1/min. Over the limit returns 429.
+- **Paid state is monotonic and idempotent.** Webhook and poll share one transition (`lib/refresh.ts`): SENT → PARTIALLY_PAID → PAID (→ refunded/cancelled); a stale read never moves an invoice backwards, and repeating a refresh changes nothing. Tested with a recorded sandbox `GET` response.
+- **Reset demo** (button, or `npm run reset-demo [-- --all]`): clears negotiations, approvals, audit and the simulated clock; tracked sandbox invoices stay unless `--all`.
 - **What is seeded or simulated.** The five clients' 6-month payment history is **seeded demo data** (`seed/seed.json`), labelled in the UI. The "Advance clock" button simulates time for the reminder ladder. Invoices, reminders, disputes reads and webhooks are real PayPal **sandbox** calls.
 
 ## Run locally
@@ -63,13 +65,23 @@ PayPal ─ webhook ─► verify signature → dedupe event.id → re-fetch invo
 cp .env.example .env      # repo root; your own sandbox REST app + Nebius key
 cd app && npm ci
 npm test                  # node:test + tsx
-npm run dev               # http://localhost:3000
+npm run dev               # http://localhost:3000 (no DEMO_PASSCODE locally = gate open; set it to test the login page)
+npm run reset-demo        # demo reset against data/duespilot.db
 ```
+
+State is SQLite (`node:sqlite`, Node ≥ 22.13) in `data/duespilot.db`, migrated in code (`lib/store.ts`); the old `data/state.json` is imported once if the DB is empty. Everything goes through `Store { read, update }`, so a Postgres store can replace it without touching callers.
+
+## Deploy to Render (not done yet)
+
+1. Render dashboard → New → Blueprint → this repo (`render.yaml`: paid Starter web service with a 1 GB disk for SQLite, `rootDir: app`, health check `/api/health`; a Postgres database is declared for the later Postgres store).
+2. Fill the `sync: false` env vars: `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`, `NEBIUS_API_KEY`, `DEMO_PASSCODE`, `DEMO_BUYER_EMAIL`. Names and meanings are in `../.env.example`.
+3. PayPal developer dashboard → the sandbox REST app → Webhooks → add `https://<service>.onrender.com/api/webhooks/paypal` with `INVOICING.INVOICE.PAID`, `INVOICING.INVOICE.PARTIALLY_PAID` (if offered), `INVOICING.INVOICE.CANCELLED`, `INVOICING.INVOICE.REFUNDED`. Copy the webhook ID into `PAYPAL_WEBHOOK_ID` and redeploy.
+4. Check: `/api/health` returns `{"ok":true}`; `/` redirects to `/login`; an unsigned POST to the webhook returns 401; pay an invoice as the sandbox buyer and watch it flip to PAID (webhook, or within `POLL_INTERVAL_MIN` minutes by poll).
 
 ## Judge access
 
 - Hosted URL: TBD (Render, paid instance; if it's cold, wait 60 s)
-- Demo passcode: TBD (also in the Devpost testing instructions)
+- Demo passcode: TBD (set as `DEMO_PASSCODE` on Render; also in the Devpost testing instructions)
 - Sandbox buyer login (to pay an invoice): TBD email / TBD password. **Sandbox only, no real money.** The REST app secret is never published.
 - Access stays free until judging ends (15 Dec 2026).
 

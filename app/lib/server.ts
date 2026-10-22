@@ -1,6 +1,6 @@
 // Wiring used by route handlers and the smoke script (server only).
 import 'server-only';
-import { config } from './config';
+import { config, loadRootEnv } from './config';
 import path from 'node:path';
 import { sqliteStore, audit, type Store } from './store';
 import { refreshAll } from './refresh';
@@ -19,6 +19,7 @@ import { readOnlyToolkit } from './toolkit';
 import { listDisputes } from './disputes';
 
 // One SQLite connection per process (globalThis survives Next dev hot reloads). DATABASE_PATH points at a Render disk.
+loadRootEnv();
 const g = globalThis as { __dpStore?: Store };
 export const store: Store = g.__dpStore ??= sqliteStore(process.env.DATABASE_PATH ?? path.resolve(process.cwd(), 'data', 'duespilot.db'),
   path.resolve(process.cwd(), 'data', 'state.json'));

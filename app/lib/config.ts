@@ -30,13 +30,16 @@ export function loadConfig(env: Env) {
 export type Config = ReturnType<typeof loadConfig>;
 
 let cached: Config | undefined;
-// Local dev: secrets live in the repo-root .env (gitignored), one level above app/.
+let envLoaded = false;
+// Local dev: secrets live in the repo-root .env (gitignored), one level above app/. On Render there is no file.
+// Project .env wins over ambient shell vars (the dev shell may carry unrelated PAYPAL_* values).
+export function loadRootEnv() {
+  if (envLoaded) return;
+  envLoaded = true;
+  const f = path.resolve(process.cwd(), '..', '.env');
+  if (existsSync(f)) Object.assign(process.env, parseEnv(readFileSync(f, 'utf8')));
+}
 export function config(): Config {
-  if (!cached) {
-    const f = path.resolve(process.cwd(), '..', '.env');
-    // Project .env wins over ambient shell vars (the dev shell may carry unrelated PAYPAL_* values).
-    if (existsSync(f)) Object.assign(process.env, parseEnv(readFileSync(f, 'utf8')));
-    cached = loadConfig(process.env);
-  }
+  if (!cached) { loadRootEnv(); cached = loadConfig(process.env); }
   return cached;
 }
