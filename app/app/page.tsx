@@ -107,7 +107,8 @@ export default function Home() {
         <h2>Clients (seeded history → reliability score)</h2>
         <div style={{ height: 260 }}><AgGridReact rowData={s?.clients ?? []} columnDefs={clientCols} /></div>
         {s?.live && !s.live.error && <p style={{ fontSize: 13 }}>Live sandbox: {s.live.invoices_total} invoices on the merchant account; Transaction Search (30 d): {s.live.transactions_30d ?? 'n/a'} transactions.</p>}
-        <h2>Invoices in PayPal <button disabled={!!busy} onClick={() => call('Re-fetching from PayPal…', '/api/invoices/refresh')}>Refresh from PayPal</button></h2>
+        <h2>Invoices in PayPal <button disabled={!!busy} onClick={() => call('Re-fetching from PayPal…', '/api/invoices/refresh')}>Refresh from PayPal</button>{' '}
+          <button disabled={!!busy} onClick={() => confirm('Reset demo? Clears negotiations, approvals, audit and the clock. PayPal invoices stay.') && call('Resetting demo…', '/api/reset')}>Reset demo</button></h2>
         <div style={{ height: 220 }}><AgGridReact rowData={s?.invoices ?? []} columnDefs={invCols} /></div>
       </>}
 

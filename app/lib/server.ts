@@ -1,7 +1,10 @@
 // Wiring used by route handlers and the smoke script (server only).
 import 'server-only';
 import { config } from './config';
-import { fileStore, audit } from './store';
+import path from 'node:path';
+import { sqliteStore, audit, type Store } from './store';
+import { refreshAll } from './refresh';
+import { resetDemo as reset } from './reset';
 import { loadSeed, clientRows } from './seed';
 import { negotiate } from './negotiate';
 import { makeArTurn, nebiusModel } from './llm';
@@ -15,17 +18,23 @@ import { nextReminder, draftReminderText, type Persona } from './reminders';
 import { readOnlyToolkit } from './toolkit';
 import { listDisputes } from './disputes';
 
-export const store = fileStore();
+// One SQLite connection per process (globalThis survives Next dev hot reloads). DATABASE_PATH points at a Render disk.
+const g = globalThis as { __dpStore?: Store };
+export const store: Store = g.__dpStore ??= sqliteStore(process.env.DATABASE_PATH ?? path.resolve(process.cwd(), 'data', 'duespilot.db'),
+  path.resolve(process.cwd(), 'data', 'state.json'));
 // Activity log: every PayPal write lands in state.paypal_log with its PayPal-Request-Id and debug id.
-setWriteLogger((l) => { const s = store.read(); s.paypal_log.push(l); store.write(s); });
+setWriteLogger((l) => { void store.update((s) => { s.paypal_log.push(l); }); });
 
 // Simulated clock ("Advance clock" button), labelled in the UI.
-export const today = () => new Date(Date.now() + store.read().clock_days * 86_400_000).toISOString().slice(0, 10);
+export const today = async () => new Date(Date.now() + (await store.read()).clock_days * 86_400_000).toISOString().slice(0, 10);
 export function advanceClock(days: number) {
-  const s = store.read(); s.clock_days = days === 0 ? 0 : s.clock_days + days;
-  audit(s, `simulated clock ${days === 0 ? 'reset' : `+${days}d`} -> offset ${s.clock_days}d`); store.write(s);
-  return s.clock_days;
+  return store.update((s) => {
+    s.clock_days = days === 0 ? 0 : s.clock_days + days;
+    audit(s, `simulated clock ${days === 0 ? 'reset' : `+${days}d`} -> offset ${s.clock_days}d`);
+    return s.clock_days;
+  });
 }
+export const resetDemo = (all = false) => reset(store, { all });
 const executors = () => makeExecutors({ store, allowedDomain: config().allowedDomain, today });
 
 export async function runNegotiation(clientId: string, totalUsd: number, project: string) {
@@ -41,17 +50,17 @@ export async function runNegotiation(clientId: string, totalUsd: number, project
   const S = draftSchema(c.allowedDomain);
   const bad = drafts.flatMap((d) => { const p = S.safeParse(d); return p.success ? [] : issuesOf(p.error); });
   if (bad.length) throw new Error('deal failed draft schema: ' + bad.join('; '));
-  const pending = drafts.length ? createPending(store, 'send_invoices', { negotiation: { clientId, totalUsd, project }, client_id: clientId, drafts }) : null;
-  const s = store.read();
+  const pending = drafts.length ? await createPending(store, 'send_invoices', { negotiation: { clientId, totalUsd, project }, client_id: clientId, drafts }) : null;
   const nid = pending?.id ?? crypto.randomUUID();
-  s.negotiations[nid] = { clientId, totalUsd, project, score: r.score, deal: r.deal, rounds: r.rounds.map(({ raw, ...x }) => x), usage, model: c.model, at: new Date().toISOString() };
-  audit(s, `negotiation ${clientId} $${totalUsd}: ${r.deal ? `deal in ${r.deal.rounds} rounds` : 'no deal'}`);
-  store.write(s);
+  await store.update((s) => {
+    s.negotiations[nid] = { clientId, totalUsd, project, score: r.score, deal: r.deal, rounds: r.rounds.map(({ raw, ...x }) => x), usage, model: c.model, at: new Date().toISOString() };
+    audit(s, `negotiation ${clientId} $${totalUsd}: ${r.deal ? `deal in ${r.deal.rounds} rounds` : 'no deal'}`);
+  });
   return { score: r.score, rounds: r.rounds, deal: r.deal, drafts, pending, usage };
 }
 
 export async function approveSend(id: string, hash: string) {
-  const p = store.read().pending[id];
+  const p = (await store.read()).pending[id];
   const ex = executors();
   const exec = p?.kind === 'send_reminder' ? ex.send_reminder : ex.send_invoices;
   return approve(store, id, hash, exec as (x: any) => Promise<unknown>);
@@ -63,20 +72,18 @@ export async function runIntake(brief: string) {
   const seed = loadSeed();
   const usage = { prompt: 0, completion: 0 };
   const r = await draftFromBrief(nebiusModel(c.nebiusKey, c.model), brief, { today: new Date().toISOString().slice(0, 10), allowedDomain: c.allowedDomain, buyerEmail: c.buyerEmail, clients: seed.clients }, usage);
-  const s = store.read();
-  audit(s, r.ok ? `intake: draft for ${r.client.company} $${r.draft.amount_usd}` : `intake BLOCKED: ${r.issues.join('; ').slice(0, 200)}`);
-  store.write(s);
+  await store.update((s) => audit(s, r.ok ? `intake: draft for ${r.client.company} $${r.draft.amount_usd}` : `intake BLOCKED: ${r.issues.join('; ').slice(0, 200)}`));
   if (!r.ok) return { ok: false as const, issues: r.issues, usage };
-  const pending = createPending(store, 'send_invoices', { client_id: r.client.id, drafts: [r.draft] });
+  const pending = await createPending(store, 'send_invoices', { client_id: r.client.id, drafts: [r.draft] });
   return { ok: true as const, client: { id: r.client.id, company: r.client.company }, draft: r.draft, pending, usage };
 }
 
 // Reminder plan: live tracked invoices (sendable via PayPal) + seeded unpaid invoices (simulated, plan only).
-export function reminderPlan() {
+export async function reminderPlan() {
   const seed = loadSeed();
   const rows = clientRows(seed);
-  const s = store.read();
-  const t = today();
+  const s = await store.read();
+  const t = await today();
   const persona = (id?: string) => (id && id in { prompt: 1, slow: 1, haggler: 1, ghost: 1, disputer: 1 } ? id as Persona : 'slow');
   const live = Object.values(s.invoices).filter((i) => i.status !== 'CANCELLED').map((i) => {
     const cid = i.client_id ?? (s.negotiations[i.negotiation_id ?? ''] as { clientId?: string } | undefined)?.clientId;
@@ -95,13 +102,13 @@ export function reminderPlan() {
 // Nemotron writes the words; schedule/tone are deterministic; sending goes through the approval gate.
 export async function draftReminder(invoiceId: string) {
   const c = config();
-  const row = reminderPlan().rows.find((r) => r.source === 'paypal' && r.invoice_id === invoiceId);
+  const row = (await reminderPlan()).rows.find((r) => r.source === 'paypal' && r.invoice_id === invoiceId);
   if (!row) throw new Error('not a tracked PayPal invoice');
   if (!row.plan?.due_now) throw new Error(row.plan ? `next reminder is scheduled for ${row.plan.next_on}` : 'no reminder due (paid, not overdue, or ladder finished)');
   const usage = { prompt: 0, completion: 0 };
   const text = await draftReminderText(nebiusModel(c.nebiusKey, c.model), { tone: row.plan.tone, persona: row.persona, company: row.client, number: row.number ?? invoiceId, amount_usd: row.amount_usd, days_overdue: row.plan.days_overdue }, usage);
   const payload = { invoice_id: invoiceId, subject: text.subject, note: text.note, tone: row.plan.tone, step: row.plan.step };
-  const pending = createPending(store, 'send_reminder', payload);
+  const pending = await createPending(store, 'send_reminder', payload);
   return { payload, source: text.source, pending, usage };
 }
 
@@ -110,14 +117,9 @@ export async function disputes() {
   return listDisputes(readOnlyToolkit(c.clientId, c.clientSecret).getTools() as any);
 }
 
-// Polling fallback for when no public webhook URL exists (local dev): re-fetch every tracked invoice.
-export async function refreshInvoices() {
-  const s = store.read();
-  for (const id of Object.keys(s.invoices)) {
-    const v = await getInvoice(id);
-    if (v.status !== s.invoices[id].status) audit(s, `poll ${id}: ${s.invoices[id].status} -> ${v.status}`);
-    Object.assign(s.invoices[id], { status: v.status, amount_usd: v.amount_usd, pay_link: v.pay_link ?? s.invoices[id].pay_link, due_on: v.due_on ?? s.invoices[id].due_on, updated_at: new Date().toISOString() });
-  }
-  store.write(s);
-  return s.invoices;
+// Poll fallback = source of truth when no webhook arrives (local dev, or webhook down): re-fetch tracked invoices.
+// The scheduled poller (instrumentation.ts) checks only unsettled ones; the Refresh button re-checks all.
+export async function refreshInvoices(all = true) {
+  const r = await refreshAll(store, getInvoice, { all });
+  return { ...r, invoices: (await store.read()).invoices };
 }

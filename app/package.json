@@ -8,7 +8,8 @@
     "start": "next start",
     "test": "tsx --test tests/*.test.ts",
     "typecheck": "tsc --noEmit",
-    "smoke": "tsx --env-file=../.env scripts/smoke.ts"
+    "smoke": "tsx --env-file=../.env scripts/smoke.ts",
+    "reset-demo": "tsx scripts/reset-demo.ts"
   },
   "dependencies": {
     "@ai-sdk/openai-compatible": "0.2.16",
@@ -29,5 +30,8 @@
     "@types/react-dom": "19.3.0",
     "tsx": "4.23.15",
     "typescript": "5.9.3"
+  },
+  "engines": {
+    "node": ">=22.13"
   }
 }
