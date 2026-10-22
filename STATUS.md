@@ -16,3 +16,12 @@
 - UI is tabbed (Clients, Negotiate, Brief → Invoice, Reminders, Disputes, Activity log). `app-readme-draft.md` moved to `app/README.md` and updated to real files.
 - **Tests 55/55**, typecheck + `next build` clean. LLM spend this slice ~4 Nemotron calls, ~3k tokens (<$0.01).
 - **Next:** pay one invoice as buyer -> Refresh -> PAID; passcode + rate limit + record-payment fallback; Render + real webhook (31 Oct).
+
+## Slice 3 (22 Oct, local; nothing deployed)
+- **Passcode gate:** `proxy.ts` gates every page + API except `/api/webhooks/paypal` and `/api/health`; `/login` sets an httpOnly HMAC cookie (constant-time compare). No `DEMO_PASSCODE` in production -> 503 everywhere (fail closed); open in local dev. Checked on `next start`: `/` -> 307 /login, API 401, forged cookie 401, webhook unsigned 401, health 200.
+- **Rate limits** (per-IP token bucket, in memory): LLM routes burst 5 then 1/5 min; PayPal approve/refresh burst 10 then 1/min; login 5 then 1/min. Live: 6th negotiate call -> 429.
+- **Poll fallback = source of truth:** `instrumentation.ts` refreshes unsettled invoices every `POLL_INTERVAL_MIN` (default 2). Webhook + poll share one monotonic, idempotent transition SENT -> PARTIALLY_PAID -> PAID (stale reads can't regress). Tested on a recorded sandbox GET of EBS2. All 3 live invoices still SENT (unpaid).
+- **SQLite** (`node:sqlite`, Node 22.16) behind async `Store{read,update}` with in-code migrations; `data/state.json` imported once (4 invoices kept). Tests use temp DBs.
+- **Render-ready, not deployed:** `render.yaml` (Starter web + 1 GB disk for SQLite, Postgres declared for a later swap), `/api/health`, `.env.example` names, README webhook steps. **Reset demo** button + `npm run reset-demo [-- --all]`.
+- **Tests 75/75**, typecheck + `next build` clean. LLM spend this slice: $0.
+- **Render day:** create the Blueprint, set secrets + `DEMO_PASSCODE`, register the webhook -> `PAYPAL_WEBHOOK_ID`, verify a real PAID event; decide whether to write the Postgres Store or stay on disk SQLite.
