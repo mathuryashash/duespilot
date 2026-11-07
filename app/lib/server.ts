@@ -19,10 +19,12 @@ import { readOnlyToolkit } from './toolkit';
 import { listDisputes } from './disputes';
 
 // One SQLite connection per process (globalThis survives Next dev hot reloads). DATABASE_PATH points at a Render disk.
+// Opened on first use, not at import: `next build` imports every route module, and the Render disk is not mounted then.
 loadRootEnv();
 const g = globalThis as { __dpStore?: Store };
-export const store: Store = g.__dpStore ??= sqliteStore(process.env.DATABASE_PATH ?? path.resolve(process.cwd(), 'data', 'duespilot.db'),
+const db = (): Store => g.__dpStore ??= sqliteStore(process.env.DATABASE_PATH ?? path.resolve(process.cwd(), 'data', 'duespilot.db'),
   path.resolve(process.cwd(), 'data', 'state.json'));
+export const store: Store = { read: async () => db().read(), update: async (fn) => db().update(fn) };
 // Activity log: every PayPal write lands in state.paypal_log with its PayPal-Request-Id and debug id.
 setWriteLogger((l) => { void store.update((s) => { s.paypal_log.push(l); }); });
 
