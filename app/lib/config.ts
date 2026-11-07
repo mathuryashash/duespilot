@@ -20,10 +20,10 @@ export function loadConfig(env: Env) {
     clientId: env.PAYPAL_CLIENT_ID!,
     clientSecret: env.PAYPAL_CLIENT_SECRET!,
     nebiusKey: env.NEBIUS_API_KEY!,
-    model: env.LLM_MODEL ?? 'nvidia/nemotron-3-super-120b-a12b',
-    allowedDomain: env.RECIPIENT_DOMAIN ?? 'personal.example.com',
-    buyerEmail: env.DEMO_BUYER_EMAIL ?? 'sb-ajpsl53458040@personal.example.com',
-    webhookId: env.PAYPAL_WEBHOOK_ID ?? '',
+    model: env.LLM_MODEL || 'nvidia/nemotron-3-super-120b-a12b',
+    allowedDomain: env.RECIPIENT_DOMAIN || 'personal.example.com',
+    buyerEmail: env.DEMO_BUYER_EMAIL || 'sb-ajpsl53458040@personal.example.com',
+    webhookId: env.PAYPAL_WEBHOOK_ID || '',
     allowSim: env.DEMO_ALLOW_SIM === '1',
   };
 }

@@ -1,6 +1,5 @@
-# Render Blueprint (NOT deployed yet; provision on Render day). Paid Starter web service: free instances sleep and
-# have no disk. State lives in SQLite on the persistent disk below (DATABASE_PATH). The Postgres database is declared
-# so DATABASE_URL exists for the planned Postgres Store; the app does not read DATABASE_URL yet.
+# Render Blueprint. Paid Starter web service: free instances sleep and have no disk.
+# State lives in SQLite on the persistent disk below (DATABASE_PATH). No Postgres: the app does not use one.
 services:
   - type: web
     name: duespilot
@@ -31,14 +30,5 @@ services:
         sync: false
       - key: DEMO_PASSCODE
         sync: false
-      - key: DEMO_BUYER_EMAIL
-        sync: false
       - key: PAYPAL_WEBHOOK_ID
         sync: false          # set after registering https://<service>.onrender.com/api/webhooks/paypal
-      - key: DATABASE_URL
-        fromDatabase:
-          name: duespilot-db
-          property: connectionString
-databases:
-  - name: duespilot-db
-    plan: basic-256mb
