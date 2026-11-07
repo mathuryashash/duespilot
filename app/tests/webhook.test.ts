@@ -45,3 +45,14 @@ test('malformed body -> 400', async () => {
   const x = await deps(true);
   assert.equal((await handleWebhook({ headers: {}, rawBody: '{nope' }, x.d)).status, 400);
 });
+
+test('verified event for an invoice the poll already settled still leaves an audit line', async () => {
+  const x = await deps(true);
+  const paid = { id: 'INV2-AAAA', status: 'PAID', amount_usd: 1280, paid_usd: 1280, due_usd: 0 };
+  await x.store.update((s) => { Object.assign(s.invoices['INV2-AAAA'], { status: 'PAID' }); });
+  const r = await handleWebhook({ headers: {}, rawBody: event('WH-4') }, { ...x.d, getInvoice: async () => paid as any });
+  assert.equal(r.status, 200);
+  const s = await x.store.read();
+  assert.equal(s.invoices['INV2-AAAA'].status, 'PAID');
+  assert.match(s.audit.at(-1)!.what, /^webhook INVOICING\.INVOICE\.PAID INV2-AAAA: verified, already PAID$/);
+});

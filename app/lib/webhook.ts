@@ -1,5 +1,6 @@
 // Webhook handling (BLOCKER 5): verify -> dedupe event.id -> re-fetch by id -> update. Payload amounts are never trusted.
 import type { Store } from './store';
+import { audit } from './store';
 import type { InvoiceView } from './paypal';
 import { applyInvoice } from './refresh';
 
@@ -18,7 +19,8 @@ export async function handleWebhook(req: { headers: Record<string, string | unde
   const dup = await d.store.update((s) => {
     if (s.events[ev.id]) return true; // a concurrent delivery won the race
     s.events[ev.id] = new Date().toISOString();
-    if (fresh) applyInvoice(s, fresh, 'webhook');
+    // Verified deliveries always leave an audit line, so a webhook that lands after the poll is still visible.
+    if (fresh && !applyInvoice(s, fresh, 'webhook')) audit(s, `webhook ${String(ev.event_type ?? 'event')} ${fresh.id}: verified, already ${fresh.status}`);
     return false;
   });
   if (dup) return { status: 200, body: { duplicate: true } };
