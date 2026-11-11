@@ -34,3 +34,16 @@ test('final terms become deposit + balance drafts that pass the draft schema', a
   assert.equal(drafts[1].discount_until, '2026-10-26');
   assert.equal(drafts[0].due_date, '2026-10-21');
 });
+
+test('personas: the eval AP-agent personas are selectable, swap only the policy, and feasibility comes from exhaustive search', async () => {
+  const { personas, withPersona } = await import('../lib/personas'); const PERSONAS = personas();
+  const seed = loadSeed();
+  assert.ok(PERSONAS.length >= 10);
+  const p = PERSONAS.find((x) => /10% off/.test(x.label))!;
+  const s2 = withPersona(seed, p.id);
+  assert.equal(s2.ap_policies.length, seed.ap_policies.length);
+  assert.equal(s2.ap_policies.find((x) => x.client_id === p.client_id)!.discount_pct_required_if_net_under_30, 10);
+  assert.equal(p.feasible, false); // mandate caps the discount at 3%: no deal exists
+  assert.equal(PERSONAS.find((x) => x.id === 'N02')!.feasible, true);
+  assert.throws(() => withPersona(seed, 'nope'));
+});

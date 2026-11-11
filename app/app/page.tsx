@@ -44,7 +44,9 @@ export default function Home() {
   const [busy, setBusy] = useState('');
   const [err, setErr] = useState('');
   const [neg, setNeg] = useState<any>(null);
-  const [form, setForm] = useState({ clientId: 'haggler', totalUsd: 3200, project: 'Storefront redesign' });
+  const [form, setForm] = useState({ clientId: 'haggler', totalUsd: 3200, project: 'Storefront redesign', personaId: '' });
+  const [personas, setPersonas] = useState<{ id: string; client_id: string; label: string; feasible: boolean }[]>([]);
+  useEffect(() => { fetch('/api/negotiate').then((r) => (r.ok ? r.json() : [])).then(setPersonas).catch(() => {}); }, []);
   const [brief, setBrief] = useState('Built the new landing page for Kestrel Commerce (Priya): design + build $2,000, 3 revision rounds $400. Net 15.');
   const [intake, setIntake] = useState<any>(null);
   const [rem, setRem] = useState<any>(null);
@@ -128,12 +130,19 @@ export default function Home() {
       {tab === 'Negotiate' && <>
         <h2>Negotiate with the client&apos;s AP agent</h2>
         <form onSubmit={async (e) => { e.preventDefault(); const r = await call('Negotiating (Nemotron)…', '/api/negotiate', form); if (r) setNeg(r); }}>
-          <select value={form.clientId} onChange={(e) => setForm({ ...form, clientId: e.target.value })}>
+          <select value={form.clientId} onChange={(e) => setForm({ ...form, clientId: e.target.value, personaId: '' })}>
             {s?.clients.filter((c) => c.has_ap_agent).map((c) => <option key={c.id} value={c.id}>{c.company} (score {c.score})</option>)}
           </select>{' '}
           <input value={form.project} onChange={(e) => setForm({ ...form, project: e.target.value })} maxLength={80} />{' '}
           $<input type="number" value={form.totalUsd} min={1} max={10000} onChange={(e) => setForm({ ...form, totalUsd: Number(e.target.value) })} style={{ width: 90 }} />{' '}
           <button disabled={!!busy}>Negotiate</button>
+          <div style={{ marginTop: 6, fontSize: 13 }}>Their AP agent:{' '}
+            <select aria-label="AP agent persona" value={form.personaId} onChange={(e) => setForm({ ...form, personaId: e.target.value })}>
+              <option value="">seeded policy</option>
+              {personas.filter((p) => p.client_id === form.clientId).map((p) => <option key={p.id} value={p.id}>{p.label}{p.feasible ? '' : ' (no deal possible)'}</option>)}
+            </select>{' '}
+            <span style={{ color: '#6b7280' }}>Hard personas from the eval. &quot;No deal possible&quot; is decided by exhaustive search over every offer, not by the model.</span>
+          </div>
         </form>
         {neg && (
           <section>
@@ -147,7 +156,7 @@ export default function Home() {
                   : <div style={{ color: '#166534', background: '#dcfce7', padding: '2px 8px', borderRadius: 6, display: 'inline-block', margin: '2px 0' }}>✓ Server check passed (inside your mandate)</div>}
                 {r.ap && <div><b>Client&apos;s AP agent:</b> {r.ap.message}</div>}
               </li>))}</ol>
-            {!neg.deal && <p>No deal within the mandate.</p>}
+            {!neg.deal && <p><b>No deal within the mandate.</b> {neg.persona && !neg.persona.feasible ? 'Correct: exhaustive search shows no offer inside your mandate satisfies this AP agent, so walking away is the right call.' : ''}</p>}
           </section>
         )}
         {approvals}

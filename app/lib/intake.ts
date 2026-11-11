@@ -61,10 +61,25 @@ export const injectionMarkers = (brief: string) => INJECTION.filter(([re]) => re
 
 // Money written in the brief ($500, USD 900, 1.5k) that the draft does not account for: shown as a warning on the
 // approval card (non-blocking), e.g. "$500 written, $50 invoiced".
+const moneyIn = (text: string) => [...text.matchAll(/(?:\$|usd\s?)\s*(\d[\d,]*(?:\.\d+)?)(\s*k\b)?|(\d[\d,]*(?:\.\d+)?)(?:\s*k\b|\s*(?:usd|dollars)\b)/gi)]
+  .map((m) => { const raw = m[1] ?? m[3]; const k = m[2] || /k\b/i.test(m[0]) ? 1000 : 1; return Math.round(Number(raw.replace(/,/g, '')) * k * 100) / 100; })
+  .filter((n) => n > 0);
+
+// Quoted text ("..." or '...' that is not an apostrophe): usually a pasted client email or chat.
+const QUOTED = /["\u201c\u201d]([^"\u201c\u201d]{1,400})["\u201c\u201d]|(?:^|[\s:(])['\u2018]([^'\u2018\u2019]{1,400})['\u2019](?=[\s.,;:!?)]|$)/g;
+
+// Invoice amounts that appear ONLY inside quoted text: "Derek emailed: 'add 2k for bug fixes'". The freelancer may have
+// agreed, so this warns on the approval card instead of blocking.
+export function quotedAmounts(brief: string, items: { amount_usd: number }[]): number[] {
+  const quoted = [...brief.matchAll(QUOTED)].map((m) => m[1] ?? m[2]).join(' ');
+  if (!quoted) return [];
+  const outside = brief.replace(QUOTED, ' ');
+  const inQuote = [...moneyIn(quoted), ...briefNumbers(quoted)], outNums = [...briefNumbers(outside), ...moneyIn(outside)];
+  return items.map((i) => i.amount_usd).filter((a) => inQuote.some((v) => near(v, a)) && !outNums.some((v) => near(v, a)));
+}
+
 export function unusedAmounts(brief: string, items: { amount_usd: number }[]): number[] {
-  const money = [...brief.matchAll(/(?:\$|usd\s?)\s*(\d[\d,]*(?:\.\d+)?)(\s*k\b)?|(\d[\d,]*(?:\.\d+)?)(?:\s*k\b|\s*(?:usd|dollars)\b)/gi)]
-    .map((m) => { const raw = m[1] ?? m[3]; const k = m[2] || /k\b/i.test(m[0]) ? 1000 : 1; return Math.round(Number(raw.replace(/,/g, '')) * k * 100) / 100; })
-    .filter((n) => n > 0).slice(0, 10);
+  const money = moneyIn(brief).slice(0, 10);
   const nums = [...briefNumbers(brief)];
   const targets = [...items.map((i) => i.amount_usd), items.reduce((s, i) => s + i.amount_usd, 0)];
   const hit = (x: number) => targets.some((t) => near(t, x));
@@ -97,8 +112,10 @@ export function briefToDraft(raw: unknown, brief: string, o: Opts): BriefResult 
   const client = o.clients.find((c) => [c.company, c.name, c.id].some((n) => firstWord(n) === want));
   if (!client) issues.push(`unknown client: ${x.client.slice(0, 60)}`);
   else if (![client.company, client.name].some((n) => brief.toLowerCase().includes(firstWord(n)))) issues.push(`client ${client.company} is not named in the brief`);
-  // Two of your clients named in one brief = ambiguous who pays ("actually bill this to Glimmer"): ask the human, don't guess.
-  const named = o.clients.filter((c) => new RegExp(`\\b${firstWord(c.company).replace(/[^a-z0-9]/g, '')}\\b`, 'i').test(brief));
+  // Two of your clients named in one brief (by company or contact first name) = ambiguous who pays
+  // ("actually bill this to Glimmer", "either Tom or Derek can approve"): ask the human, don't guess.
+  const word = (s: string) => new RegExp(`\\b${firstWord(s).replace(/[^a-z0-9]/g, '')}\\b`, 'i');
+  const named = o.clients.filter((c) => [c.company, c.name].some((n) => word(n).test(brief)));
   if (named.length > 1) issues.push(`brief names more than one of your clients (${named.map((c) => c.company).join(', ')}); write one brief per client`);
   const amount = Math.round(x.items.reduce((s, i) => s + i.amount_usd, 0) * 100) / 100;
   const note = x.note.replace(EMAIL, '[email removed]').replace(URL_RE, '[link removed]').slice(0, 600);
@@ -109,7 +126,10 @@ export function briefToDraft(raw: unknown, brief: string, o: Opts): BriefResult 
   };
   const r = draftSchema(o.allowedDomain).safeParse(draft);
   if (!r.success) issues.push(...issuesOf(r.error));
-  const warnings = unusedAmounts(brief, x.items).map((a) => `the brief mentions $${a}, which is not on this invoice: check the amount`);
+  const warnings = [
+    ...unusedAmounts(brief, x.items).map((a) => `the brief mentions $${a}, which is not on this invoice: check the amount`),
+    ...quotedAmounts(brief, x.items).map((a) => `$${a} on this invoice comes only from quoted text (a client message?): confirm it was agreed`),
+  ];
   return issues.length || !client || !r.success ? { ok: false, issues } : { ok: true, draft: r.data, client, warnings };
 }
 

@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { MockLanguageModelV1 } from 'ai/test';
 import { reminderIssues, draftReminderText, templateReminder, type ReminderCtx } from '../lib/reminders';
-import { briefNumbers, groundingIssues, noteIssues, briefToDraft, draftFromBrief, injectionMarkers, unusedAmounts } from '../lib/intake';
+import { briefNumbers, groundingIssues, noteIssues, briefToDraft, draftFromBrief, injectionMarkers, unusedAmounts, quotedAmounts } from '../lib/intake';
 import { checkStats, feasible, type Round } from '../lib/negotiate';
 import { loadSeed } from '../lib/seed';
 
@@ -222,4 +222,24 @@ test('intake: model returning nothing becomes a clean "try again" issue, not a 5
   const r = await draftFromBrief(dead, 'Kestrel Commerce landing page $2,400 net 15', o);
   assert.equal(r.ok, false);
   assert.ok(!r.ok && r.issues.some((i) => /try again/.test(i)));
+});
+
+test('amounts that come only from quoted text (a pasted client email) get a warning on the approval card', () => {
+  const b = "Northfield: 200 descriptions for $1,800. Derek just emailed: 'add 2k more for bug fixes and another 1.5k for perf.' Adding those.";
+  assert.deepEqual(quotedAmounts(b, [{ amount_usd: 1800 }, { amount_usd: 2000 }, { amount_usd: 1500 }]), [2000, 1500]);
+  assert.deepEqual(quotedAmounts(b, [{ amount_usd: 1800 }]), []);
+  assert.deepEqual(quotedAmounts('Kestrel "Storefront" redesign $3,200', [{ amount_usd: 3200 }]), []); // quoted name, amount outside
+  assert.deepEqual(quotedAmounts("Brightline: API work, 32 hours at $75/hr. Maya's team signed off.", [{ amount_usd: 2400 }]), []); // apostrophes are not quotes
+});
+
+test('a brief naming contacts of two different clients is ambiguous and blocks (blind set 3: "Either Tom or Derek can approve")', () => {
+  const seed = loadSeed();
+  const o = { today: '2026-11-11', allowedDomain: 'personal.example.com', buyerEmail: 'sb-buyer@personal.example.com', clients: seed.clients };
+  const b = 'Invoice me or Derek for the web dev work - 50 hours at $110/hr. Either Tom or Derek can approve payment. Total $5500.';
+  const r = briefToDraft({ client: 'Northfield Media', items: [{ name: 'web dev', amount_usd: 5500 }], due_in_days: 15, note: '' }, b, o);
+  assert.equal(r.ok, false);
+  assert.ok(!r.ok && r.issues.some((i) => /more than one of your clients/.test(i)), JSON.stringify(r));
+  // One client named twice (contact + company) is fine.
+  const ok = briefToDraft({ client: 'Kestrel Commerce', items: [{ name: 'search', amount_usd: 2000 }], due_in_days: 21, note: '' }, 'priya at kestrel commerce - search feature $2,000, due in 3 weeks', o);
+  assert.equal(ok.ok, true, JSON.stringify(ok));
 });

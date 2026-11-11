@@ -8,6 +8,7 @@ import { resetDemo as reset } from './reset';
 import { loadSeed, clientRows } from './seed';
 import { negotiate, checkStats } from './negotiate';
 import { forecast } from './forecast';
+import { personas, withPersona } from './personas';
 import { makeArTurn, nebiusModel } from './llm';
 import { dealToDrafts } from './deal';
 import { draftSchema, issuesOf } from './draft';
@@ -41,9 +42,11 @@ export function advanceClock(days: number) {
 export const resetDemo = (all = false) => reset(store, { all });
 const executors = () => makeExecutors({ store, allowedDomain: config().allowedDomain, today });
 
-export async function runNegotiation(clientId: string, totalUsd: number, project: string) {
+export async function runNegotiation(clientId: string, totalUsd: number, project: string, personaId?: string) {
   const c = config();
-  const seed = loadSeed();
+  const seed = personaId ? withPersona(loadSeed(), personaId) : loadSeed();
+  const persona = personaId ? personas().find((p) => p.id === personaId) : undefined;
+  if (persona && persona.client_id !== clientId) throw new Error('persona belongs to another client');
   if (!seed.ap_policies.some((p) => p.client_id === clientId)) throw new Error('client has no AP agent');
   const row = clientRows(seed).find((r) => r.id === clientId)!;
   const usage = { prompt: 0, completion: 0 };
@@ -58,10 +61,10 @@ export async function runNegotiation(clientId: string, totalUsd: number, project
   const nid = pending?.id ?? crypto.randomUUID();
   const checks = checkStats(r.rounds);
   await store.update((s) => {
-    s.negotiations[nid] = { clientId, totalUsd, project, score: r.score, deal: r.deal, rounds: r.rounds.map(({ raw, ...x }) => x), checks, usage, model: c.model, at: new Date().toISOString() };
-    audit(s, `negotiation ${clientId} $${totalUsd}: ${r.deal ? `deal in ${r.deal.rounds} rounds` : 'no deal'}; server check rejected ${checks.rejected} of ${checks.proposed} offers, model fixed ${checks.fixed}`);
+    s.negotiations[nid] = { clientId, totalUsd, project, persona: persona?.label, score: r.score, deal: r.deal, rounds: r.rounds.map(({ raw, ...x }) => x), checks, usage, model: c.model, at: new Date().toISOString() };
+    audit(s, `negotiation ${clientId}${persona ? ` (persona: ${persona.label})` : ''} $${totalUsd}: ${r.deal ? `deal in ${r.deal.rounds} rounds` : 'no deal'}; server check rejected ${checks.rejected} of ${checks.proposed} offers, model fixed ${checks.fixed}`);
   });
-  return { score: r.score, rounds: r.rounds, deal: r.deal, drafts, pending, usage, checks };
+  return { score: r.score, rounds: r.rounds, deal: r.deal, drafts, pending, usage, checks, persona: persona && { label: persona.label, feasible: persona.feasible } };
 }
 
 export async function approveSend(id: string, hash: string) {
