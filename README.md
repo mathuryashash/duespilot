@@ -3,11 +3,29 @@
 PayPal AI Hackathon entry (work in progress). **PayPal sandbox only** (US business + US personal sandbox accounts, USD). Client payment history is **seeded demo data** (`seed/seed.json`).
 
 What runs today (`app/`):
-1. Client table (AG Grid Community): reliability score from seeded history, plus live sandbox invoice list + Transaction Search count.
-2. Negotiation: the AR agent (Nemotron 3 Super on Nebius Token Factory, AI SDK v4) haggles with a client AP-agent policy in up to 3 rounds. Every offer is checked **in server code** against the freelancer's mandate. Offers that break it never reach the counterparty.
+1. Client table (AG Grid Community, custom cells: reliability bar, status pills, aging buckets): reliability score from seeded history, plus live sandbox invoice list + Transaction Search count.
+2. Negotiation: the AR agent (Nemotron 3 Super on Nebius Token Factory, AI SDK v4) haggles with a client AP-agent policy in up to 3 rounds. Every offer is checked **in server code** against the freelancer's mandate. Offers that break it never reach the counterparty, and the model sees the reason and revises. Ten hard AP-agent personas from the eval can be picked in the Negotiate tab.
 3. Approval gate: the agreed deal becomes a pending action `{id, sha256 hash}`. Nothing is created or sent in PayPal until you click Approve. A wrong hash gets 409, and a replay is a no-op.
 4. On approval: a deposit invoice and a balance invoice (net-N with early-pay terms) are created and sent through Invoicing v2 to the sandbox buyer.
 5. Paid tracking: `POST /api/webhooks/paypal` verifies via `verify-webhook-signature`, dedupes on `event.id`, and re-fetches the invoice instead of trusting the payload. There is also a "Refresh from PayPal" polling fallback for local dev without a public URL.
+6. Brief to invoice: the model extracts client and line items; code checks every amount against numbers in the brief, blocks text aimed at the AI, two-client briefs and off-allowlist recipients, and warns on the approval card about amounts it left out or took only from a quoted client message. Its own extraction slips get one retry with the reason; caps (amount, terms) are never retried.
+7. Reminders: schedule and tone are plain code; the model writes the words, a checker rejects soft wording in firm/final reminders and missing amount, number, due date or pay link, then one retry, then a fixed template.
+8. Cash forecast (AG Charts): expected cash per week for 6 weeks, net of PayPal's fee (4.4% + $0.30, India receiving rate) and weighted by each client's payment record.
+
+## Measured (real model, `npm run eval`, full tables in `app/eval/RESULTS.md`)
+
+Nemotron 3 Super on Nebius, every case run 3 times, scored by code against hand labels or exhaustive search.
+
+| what | result |
+|---|---|
+| Negotiation, 10 client AP-agent personas (pushy, no deposit, net-60, "10% off or no deal") | deal closed in 12/12 runs where one exists; walked away in 18/18 where exhaustive search says none exists |
+| Signed deals that break the freelancer's mandate | 0 of 12. In these runs the model never proposed an out-of-mandate offer (0 of 75), so the server's reject-and-revise path is covered by unit tests, not by this eval |
+| Brief to invoice, blind set written by a separate agent that never saw the code (first run) | 35/36 legit runs correct (1 model timeout); 6/36 attack runs gave a wrong draft with no warning |
+| Same set after fixing the gap it found (client named by contact name only) | 3/36 attack runs: all one "add a $5,000 finder's fee" line the freelancer asks for, so arguably correct |
+| Firm/final reminders whose first model draft was too soft ("friendly reminder") | 11/36 runs; all 11 fixed on one retry with the checker's reason; 0 reach the approval card |
+| Model cost | $0.0005 per brief, $0.0013 per negotiation, $0.0007 per reminder; whole eval $0.22 |
+
+The briefs and policies are written by us (one set by a separate agent), not collected from real users, and 3 runs per case is a small sample. Earlier, already-tuned sets and their numbers are in the same file, labelled as such.
 
 ## Run locally
 ```
@@ -25,6 +43,6 @@ Local webhooks: PayPal can't reach localhost, so use "Refresh from PayPal" (poll
 - Known sandbox issue: `POST /v2/invoicing/invoices/{id}/conditional-rules` returned 500 for every body we tried (20 Oct 2026). The early-pay discount is therefore also written into the invoice terms, and the grid shows `early_pay_rule: failed`.
 
 ## Credits
-`@paypal/agent-toolkit` is Apache-2.0. The PayPal REST client follows patterns from paypaldev/hackathon-paypal-ag-grid-boilerplate (re-typed, not copied). AG Grid Community is MIT.
+`@paypal/agent-toolkit` is Apache-2.0. AG Charts Community is MIT. The PayPal REST client follows patterns from paypaldev/hackathon-paypal-ag-grid-boilerplate (re-typed, not copied). AG Grid Community is MIT.
 
 MIT licensed. See `LICENSE`.
