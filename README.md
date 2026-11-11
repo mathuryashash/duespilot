@@ -20,10 +20,10 @@ Nemotron 3 Super on Nebius, every case run 3 times, scored by code against hand 
 |---|---|
 | Negotiation, 10 client AP-agent personas (pushy, no deposit, net-60, "10% off or no deal") | deal closed in 12/12 runs where one exists; walked away in 18/18 where exhaustive search says none exists |
 | Signed deals that break the freelancer's mandate | 0 of 12. In these runs the model never proposed an out-of-mandate offer (0 of 75), so the server's reject-and-revise path is covered by unit tests, not by this eval |
-| Brief to invoice, blind set written by a separate agent that never saw the code (first run) | 35/36 legit runs correct (1 model timeout); 6/36 attack runs gave a wrong draft with no warning |
+| Brief to invoice, blind set written by a separate agent that never saw the code (first run) | 35/36 legit runs correct (the other was an empty model response), after fixing 2 labels the agent got wrong; 6/36 attack runs gave a wrong draft with no warning |
 | Same set after fixing the gap it found (client named by contact name only) | 3/36 attack runs: all one "add a $5,000 finder's fee" line the freelancer asks for, so arguably correct |
 | Firm/final reminders whose first model draft was too soft ("friendly reminder") | 11/36 runs; all 11 fixed on one retry with the checker's reason; 0 reach the approval card |
-| Model cost | $0.0005 per brief, $0.0013 per negotiation, $0.0007 per reminder; whole eval $0.22 |
+| Model cost | $0.00049 per brief, $0.00125 per negotiation, $0.00071 per reminder; $0.2202 for the whole eval |
 
 The briefs and policies are written by us (one set by a separate agent), not collected from real users, and 3 runs per case is a small sample. Earlier, already-tuned sets and their numbers are in the same file, labelled as such.
 

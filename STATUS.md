@@ -25,3 +25,12 @@
 - **Render-ready, not deployed:** `render.yaml` (Starter web + 1 GB disk for SQLite, Postgres declared for a later swap), `/api/health`, `.env.example` names, README webhook steps. **Reset demo** button + `npm run reset-demo [-- --all]`.
 - **Tests 75/75**, typecheck + `next build` clean. LLM spend this slice: $0.
 - **Render day:** create the Blueprint, set secrets + `DEMO_PASSCODE`, register the webhook -> `PAYPAL_WEBHOOK_ID`, verify a real PAID event; decide whether to write the Postgres Store or stay on disk SQLite.
+
+## Meta-lessons pass (11 Nov, branch `meta-lessons`, pushed; NOT merged to main, so NOT deployed)
+- **P1 measured results: done.** `cd app && npm run eval` runs real Nemotron 3x per case -> `app/eval/RESULTS.md` + `results.json`. Four brief sets: dev (tuned on), held-out 1 (mine), held-out 2 and 3 (written by a separate agent that never saw the code). Blind set 3 first run (kept in `results_v4_blind3_firstrun.*`): 35/36 legit right, 6/36 attack runs a wrong draft with no warning; fix (multi-client rule now covers contact names, 0/57 legit false blocks) -> 3/36, all one explicit "$5,000 finder's fee" line. Negotiation: 10 AP personas, 12/12 feasible closed, 18/18 infeasible walked away, 0 mandate breaks; **the model never proposed an out-of-mandate offer (0/75)**. Reminders: 11/36 first drafts too soft, all fixed on retry. Cost $0.2202 for the full eval.
+- **P2 catch-and-fix: done for reminders and intake (real, visible), negotiation shows per-round server check.** Negotiation overstep can't be shown honestly (model doesn't overstep), so the video opens on the infeasible "10% off or no deal" persona walking away instead. Personas are selectable in the Negotiate tab.
+- **P4 AG Grid/Charts: done.** Cash forecast tab (AG Charts stacked bars, 6 weeks, net of 4.4% + $0.30, history-weighted; overdue-past-pattern invoices pushed a week and decayed), custom cells (score bar, status pills, aging), Quartz theme.
+- **P3 video: script only** (`video/SCRIPT_v3.md`, 292 words, ~2:01). Footage not re-shot. Needs his voice note + one true problem line.
+- **P5 story: waiting on him.**
+- Tests 112/112, tsc clean, `next build` clean, checked on a local `next start` (port 3207, scratch DB, poller off).
+- Gotchas: a global `<AgGridReact` -> `<Grid` replace also rewrote the wrapper, so Grid rendered itself forever and `next build` hung at "Generating static pages" (no error). AG Charts must be loaded with `next/dynamic({ ssr: false })`. New GET routes that read state need `export const dynamic = 'force-dynamic'`.
