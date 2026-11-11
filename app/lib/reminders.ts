@@ -51,24 +51,55 @@ export function cleanReminderText(t: { subject: string; note: string }) {
 }
 
 export type ReminderCtx = { tone: Tone; persona: string; company: string; number: string; amount_usd: number; days_overdue: number };
-const template = (c: ReminderCtx) => ({
-  subject: `Invoice ${c.number} is ${c.days_overdue} day${c.days_overdue === 1 ? '' : 's'} overdue`,
-  note: { friendly: `Hi ${c.company}, a friendly reminder that invoice ${c.number} for $${c.amount_usd} is now due. You can pay it from the PayPal link. Thanks!`,
-    firm: `Hi ${c.company}, invoice ${c.number} for $${c.amount_usd} is ${c.days_overdue} days past due. Please pay it this week using the PayPal link.`,
-    final: `Hi ${c.company}, invoice ${c.number} for $${c.amount_usd} is ${c.days_overdue} days past due. This is a final reminder; please pay now via the PayPal link.` }[c.tone],
+const days = (n: number) => `${n} day${n === 1 ? '' : 's'}`;
+export const templateReminder = (c: ReminderCtx) => ({
+  subject: `Invoice ${c.number} is ${days(c.days_overdue)} overdue`,
+  note: { friendly: `Hi ${c.company}, a friendly reminder that invoice ${c.number} for $${c.amount_usd} was due ${days(c.days_overdue)} ago. You can pay it from the PayPal invoice. Thanks!`,
+    firm: `Hi ${c.company}, invoice ${c.number} for $${c.amount_usd} is ${days(c.days_overdue)} past due. Please pay it this week from the PayPal invoice.`,
+    final: `Hi ${c.company}, invoice ${c.number} for $${c.amount_usd} is ${days(c.days_overdue)} past due. This is a final reminder; please pay it now from the PayPal invoice.` }[c.tone],
 });
 
+// Plain-code checker for a reminder draft. The model writes; this decides. Empty = OK.
+const SOFT = /friendly reminder|gentle reminder|just a (quick )?(reminder|nudge|note)|no rush|no pressure|whenever (you|it'?s)|when you get a chance|just checking in|at your convenience/i;
+const THREAT = /legal action|lawyer|attorney|\bcourt\b|collections?\b|\bsue\b|late fee|penalt|interest (charge|of|will)|credit (score|bureau|rating)|report you|blacklist/i;
+const amounts = (s: string) => (s.match(/\d[\d,]*(?:\.\d+)?/g) ?? []).map((x) => Number(x.replace(/,/g, '')));
+export function reminderIssues(t: { subject: string; note: string }, c: ReminderCtx): string[] {
+  const all = `${t.subject}\n${t.note}`;
+  const v: string[] = [];
+  if (!all.includes(c.number)) v.push(`missing the invoice number ${c.number}`);
+  if (!amounts(all).some((a) => Math.abs(a - c.amount_usd) < 0.005)) v.push(`missing the exact amount $${c.amount_usd}`);
+  if (c.tone !== 'friendly' && !new RegExp(`\\b${c.days_overdue}\\s*days?\\b`, 'i').test(all)) v.push(`missing how many days overdue (${c.days_overdue})`);
+  const soft = all.match(SOFT);
+  if (c.tone !== 'friendly' && soft) v.push(`soft wording "${soft[0]}" in a ${c.tone} reminder`);
+  const threat = all.match(THREAT);
+  if (threat) v.push(`threat or invented fee "${threat[0]}" (not in the freelancer's terms)`);
+  if (c.tone === 'final' && !/\bfinal\b|last (notice|reminder)/i.test(all)) v.push('final reminder must say it is the final notice');
+  if (c.tone !== 'final' && /\bfinal\b|last (notice|reminder)/i.test(all)) v.push(`only the final step may say "final" (this is ${c.tone})`);
+  if (t.note.split(/\s+/).length > 90) v.push('longer than 90 words');
+  return v;
+}
+
+export type Attempt = { subject?: string; note?: string; issues: string[] };
+// Model drafts -> checker -> one retry with the checker's reasons -> deterministic template (which always passes).
 export async function draftReminderText(model: LanguageModelV1, c: ReminderCtx, usage?: { prompt: number; completion: number }) {
-  try {
-    const r = await generateObject({
-      model, mode: 'json', temperature: 0.3, maxTokens: 1500, schema: z.object({ subject: z.string(), note: z.string() }),
-      system: `You write a short payment reminder email from a freelancer to a client. Tone: ${c.tone} (friendly = warm nudge, firm = clear and direct, final = last notice, still polite).
-Plain text only, no links, no email addresses, under 80 words. The PayPal invoice already contains the pay button. Return JSON {subject, note}.`,
-      prompt: `Client: ${c.company} (payment habit: ${c.persona}). Invoice ${c.number}, $${c.amount_usd} USD, ${c.days_overdue} days overdue.`,
-    });
-    if (usage) { usage.prompt += r.usage.promptTokens || 0; usage.completion += r.usage.completionTokens || 0; }
-    const t = cleanReminderText(r.object);
-    if (t.subject && t.note) return { ...t, source: 'llm' as const };
-  } catch { /* fall through to the deterministic template */ }
-  return { ...cleanReminderText(template(c)), source: 'template' as const };
+  const attempts: Attempt[] = [];
+  const system = `You write a short payment reminder email from a freelancer to a client. Tone: ${c.tone} (friendly = warm nudge, firm = clear and direct, final = last notice, still polite).
+Must include the invoice number, the exact amount and${c.tone === 'friendly' ? '' : ' the number of days overdue, and'} no threats, fees or penalties.${c.tone === 'final' ? ' Say this is the final reminder.' : ' Do not call it final.'}
+Plain text only, no links, no email addresses, under 80 words. The PayPal invoice already contains the pay button. Return JSON {subject, note}.`;
+  const base = `Client: ${c.company} (payment habit: ${c.persona}). Invoice ${c.number}, $${c.amount_usd} USD, ${c.days_overdue} days overdue.`;
+  for (let i = 0; i < 2; i++) {
+    const prev = attempts.at(-1);
+    try {
+      const r = await generateObject({
+        model, mode: 'json', temperature: 0.3, maxTokens: 1500, schema: z.object({ subject: z.string(), note: z.string() }), system,
+        prompt: prev ? `${base}\nYour previous draft was rejected by the checker: ${prev.issues.join('; ')}.\nPrevious draft: ${JSON.stringify({ subject: prev.subject, note: prev.note })}\nWrite a corrected draft.` : base,
+      });
+      if (usage) { usage.prompt += r.usage.promptTokens || 0; usage.completion += r.usage.completionTokens || 0; }
+      const t = cleanReminderText(r.object);
+      const issues = t.subject && t.note ? reminderIssues(t, c) : ['empty subject or note'];
+      attempts.push({ ...t, issues });
+      if (!issues.length) return { ...t, source: i === 0 ? 'llm' as const : 'llm-retry' as const, attempts };
+    } catch (e) { attempts.push({ issues: [`model error: ${String((e as Error).message).slice(0, 80)}`] }); break; }
+  }
+  return { ...cleanReminderText(templateReminder(c)), source: 'template' as const, attempts };
 }

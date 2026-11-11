@@ -1,7 +1,7 @@
 // Negotiation loop: AR agent (LLM, injected as arTurn) vs haggler AP policy (deterministic).
 // The server — not the LLM — enforces the mandate. Deal is zod-validated.
 import { z } from 'zod';
-import { Deal, mandateViolations, reliabilityScore, type ApPolicy, type Offer, type Seed } from './schemas';
+import { Deal, mandateViolations, reliabilityScore, type ApPolicy, type Mandate, type Offer, type Seed } from './schemas';
 
 type OfferT = z.infer<typeof Offer>;
 type ApT = z.infer<typeof ApPolicy>;
@@ -23,6 +23,25 @@ export function apRespond(o: OfferT, p: ApT, round: number): ApReply {
 
 export const apOpening = (p: ApT) =>
   `Hi, AP agent for this client. We'd like ${p.opening_ask.deposit_pct}% upfront and the balance net-${p.opening_ask.balance_net_days}.`;
+
+// How often the server check fired, and how often the model fixed its offer on the next round.
+export function checkStats(rounds: Round[]) {
+  const rejected = rounds.filter((r) => r.violations.length > 0);
+  const fixed = rounds.filter((r, i) => i > 0 && r.violations.length === 0 && rounds[i - 1].violations.length > 0).length;
+  return { proposed: rounds.length, rejected: rejected.length, fixed };
+}
+
+// Exhaustive search: is there ANY offer that satisfies both the mandate and the AP policy? (null = no deal is the right answer)
+export function feasible(m: z.infer<typeof Mandate>, p: ApT, score: number): OfferT | null {
+  const discounts = [0, ...Array.from({ length: Math.floor(m.early_pay_discount_pct_max * 2) }, (_, i) => (i + 1) / 2)];
+  for (let deposit_pct = 0; deposit_pct <= 100; deposit_pct++)
+    for (let balance_net_days = 0; balance_net_days <= 90; balance_net_days++)
+      for (const early_pay_discount_pct of discounts) {
+        const o = { deposit_pct, balance_net_days, early_pay_discount_pct, early_pay_window_days: 1, message: '' };
+        if (!mandateViolations(o, m, score).length && apRespond(o, p, 2).accept) return o;
+      }
+  return null;
+}
 
 export async function negotiate(a: { seed: z.infer<typeof Seed>; clientId: string; totalUsd: number; arTurn: ArTurn }) {
   const { seed, clientId, totalUsd, arTurn } = a;

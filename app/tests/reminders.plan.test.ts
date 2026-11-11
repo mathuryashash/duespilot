@@ -50,10 +50,10 @@ test('reminder text is plain, <=600 chars, no markup, no emails or links', () =>
 test('LLM drafts the text with zero tools; failure falls back to a deterministic template', async () => {
   const calls: any[] = [];
   const ok = new MockLanguageModelV1({ defaultObjectGenerationMode: 'json', doGenerate: async (o: any) => { calls.push(o);
-    return { rawCall: { rawPrompt: null, rawSettings: {} }, finishReason: 'stop', usage: { promptTokens: 1, completionTokens: 1 }, text: JSON.stringify({ subject: 'Invoice 0008', note: 'Friendly nudge.' }) }; } });
+    return { rawCall: { rawPrompt: null, rawSettings: {} }, finishReason: 'stop', usage: { promptTokens: 1, completionTokens: 1 }, text: JSON.stringify({ subject: 'Invoice 0008', note: 'Invoice 0008 for $1,280 is 4 days past due. Please pay this week.' }) }; } });
   const ctx = { tone: 'firm' as const, persona: 'slow', company: 'Northfield Media', number: '0008', amount_usd: 1280, days_overdue: 4 };
   const a = await draftReminderText(ok, ctx);
-  assert.equal(a.note, 'Friendly nudge.');
+  assert.equal(a.note, 'Invoice 0008 for $1,280 is 4 days past due. Please pay this week.');
   assert.equal(calls[0].mode.tools, undefined);
   const bad = new MockLanguageModelV1({ doGenerate: async () => { throw new Error('down'); } });
   const b = await draftReminderText(bad, ctx);

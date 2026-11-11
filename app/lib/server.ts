@@ -6,7 +6,8 @@ import { sqliteStore, audit, type Store } from './store';
 import { refreshAll } from './refresh';
 import { resetDemo as reset } from './reset';
 import { loadSeed, clientRows } from './seed';
-import { negotiate } from './negotiate';
+import { negotiate, checkStats } from './negotiate';
+import { forecast } from './forecast';
 import { makeArTurn, nebiusModel } from './llm';
 import { dealToDrafts } from './deal';
 import { draftSchema, issuesOf } from './draft';
@@ -55,11 +56,12 @@ export async function runNegotiation(clientId: string, totalUsd: number, project
   if (bad.length) throw new Error('deal failed draft schema: ' + bad.join('; '));
   const pending = drafts.length ? await createPending(store, 'send_invoices', { negotiation: { clientId, totalUsd, project }, client_id: clientId, drafts }) : null;
   const nid = pending?.id ?? crypto.randomUUID();
+  const checks = checkStats(r.rounds);
   await store.update((s) => {
-    s.negotiations[nid] = { clientId, totalUsd, project, score: r.score, deal: r.deal, rounds: r.rounds.map(({ raw, ...x }) => x), usage, model: c.model, at: new Date().toISOString() };
-    audit(s, `negotiation ${clientId} $${totalUsd}: ${r.deal ? `deal in ${r.deal.rounds} rounds` : 'no deal'}`);
+    s.negotiations[nid] = { clientId, totalUsd, project, score: r.score, deal: r.deal, rounds: r.rounds.map(({ raw, ...x }) => x), checks, usage, model: c.model, at: new Date().toISOString() };
+    audit(s, `negotiation ${clientId} $${totalUsd}: ${r.deal ? `deal in ${r.deal.rounds} rounds` : 'no deal'}; server check rejected ${checks.rejected} of ${checks.proposed} offers, model fixed ${checks.fixed}`);
   });
-  return { score: r.score, rounds: r.rounds, deal: r.deal, drafts, pending, usage };
+  return { score: r.score, rounds: r.rounds, deal: r.deal, drafts, pending, usage, checks };
 }
 
 export async function approveSend(id: string, hash: string) {
@@ -75,10 +77,12 @@ export async function runIntake(brief: string) {
   const seed = loadSeed();
   const usage = { prompt: 0, completion: 0 };
   const r = await draftFromBrief(nebiusModel(c.nebiusKey, c.model), brief, { today: new Date().toISOString().slice(0, 10), allowedDomain: c.allowedDomain, buyerEmail: c.buyerEmail, clients: seed.clients }, usage);
-  await store.update((s) => audit(s, r.ok ? `intake: draft for ${r.client.company} $${r.draft.amount_usd}` : `intake BLOCKED: ${r.issues.join('; ').slice(0, 200)}`));
-  if (!r.ok) return { ok: false as const, issues: r.issues, usage };
-  const pending = await createPending(store, 'send_invoices', { client_id: r.client.id, drafts: [r.draft] });
-  return { ok: true as const, client: { id: r.client.id, company: r.client.company }, draft: r.draft, pending, usage };
+  const retried = r.attempts.length > 1 ? `; server check rejected the model's first extraction (${r.attempts[0].issues.join('; ').slice(0, 120)})${r.ok ? ', model fixed it' : ''}` : '';
+  await store.update((s) => audit(s, (r.ok ? `intake: draft for ${r.client.company} $${r.draft.amount_usd}` : `intake BLOCKED: ${r.issues.join('; ').slice(0, 200)}`) + retried + (r.ok && r.warnings.length ? `; warning: ${r.warnings.join('; ')}` : '')));
+  if (!r.ok) return { ok: false as const, issues: r.issues, attempts: r.attempts, usage };
+  // Warnings ride in the pending payload so the approval card shows them; they are part of the hashed payload, never executed.
+  const pending = await createPending(store, 'send_invoices', { client_id: r.client.id, drafts: [r.draft], ...(r.warnings.length ? { warnings: r.warnings } : {}) });
+  return { ok: true as const, client: { id: r.client.id, company: r.client.company }, draft: r.draft, warnings: r.warnings, attempts: r.attempts, pending, usage };
 }
 
 // Reminder plan: live tracked invoices (sendable via PayPal) + seeded unpaid invoices (simulated, plan only).
@@ -112,7 +116,21 @@ export async function draftReminder(invoiceId: string) {
   const text = await draftReminderText(nebiusModel(c.nebiusKey, c.model), { tone: row.plan.tone, persona: row.persona, company: row.client, number: row.number ?? invoiceId, amount_usd: row.amount_usd, days_overdue: row.plan.days_overdue }, usage);
   const payload = { invoice_id: invoiceId, subject: text.subject, note: text.note, tone: row.plan.tone, step: row.plan.step };
   const pending = await createPending(store, 'send_reminder', payload);
-  return { payload, source: text.source, pending, usage };
+  const rejected = text.attempts.filter((a) => a.issues.length);
+  await store.update((s) => audit(s, `reminder draft ${row.number ?? invoiceId} (${row.plan!.tone}): ${text.source}${rejected.length ? `; checker rejected ${rejected.length}: ${rejected.map((a) => a.issues.join(', ')).join(' | ').slice(0, 160)}` : '; passed the checker first time'}`));
+  return { payload, source: text.source, attempts: text.attempts, pending, usage };
+}
+
+// Expected cash per week, net of PayPal's fee, from open invoices (tracked PayPal + seeded) and each client's history.
+export async function cashForecast() {
+  const plan = await reminderPlan();
+  const rows = clientRows(loadSeed());
+  const OPEN = new Set(['SENT', 'UNPAID', 'PARTIALLY_PAID', 'DISPUTED', 'SCHEDULED']);
+  const input = plan.rows.filter((r) => OPEN.has(r.status) && r.due_on && r.amount_usd > 0).map((r) => {
+    const c = rows.find((x) => x.company === r.client);
+    return { client: r.client, amount_usd: r.amount_usd, due_on: r.due_on!, score: r.score, avg_days_late: c?.avg_days_late ?? 0 };
+  });
+  return { today: plan.today, ...forecast(input, plan.today, 6), invoices: input.length };
 }
 
 export async function disputes() {

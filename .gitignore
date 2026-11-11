@@ -3,3 +3,8 @@
 node_modules/
 ref/*
 !ref/NOTES.md
+video/
+scratch_db/
+build*.log
+ssr.log
+app/eval/*.log
