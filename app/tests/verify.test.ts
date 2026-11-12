@@ -164,7 +164,7 @@ test('checkStats counts server rejections and next-round fixes', () => {
     { round: 2, offer: off(10), toolCalls: [], violations: ['deposit 10% < floor 40%'], ap: null },
     { round: 3, offer: off(40), toolCalls: [], violations: [], ap: { accept: true, message: 'ok' } },
   ];
-  assert.deepEqual(checkStats(rounds), { proposed: 3, rejected: 1, fixed: 1 });
+  assert.deepEqual(checkStats(rounds), { proposed: 3, rejected: 1, fixed: 1, ap_replies: 0, ap_overridden: 0 }); // rule-based client agent: no model replies to check
 });
 
 test('feasible() finds the overlap between mandate and AP policy by exhaustive search', () => {

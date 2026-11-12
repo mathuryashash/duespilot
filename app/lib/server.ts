@@ -10,6 +10,7 @@ import { negotiate, checkStats } from './negotiate';
 import { forecast } from './forecast';
 import { personas, withPersona } from './personas';
 import { makeArTurn, nebiusModel } from './llm';
+import { makeApTurn } from './apAgent';
 import { dealToDrafts } from './deal';
 import { draftSchema, issuesOf } from './draft';
 import { createPending, approve } from './actions';
@@ -42,7 +43,7 @@ export function advanceClock(days: number) {
 export const resetDemo = (all = false) => reset(store, { all });
 const executors = () => makeExecutors({ store, allowedDomain: config().allowedDomain, today });
 
-export async function runNegotiation(clientId: string, totalUsd: number, project: string, personaId?: string) {
+export async function runNegotiation(clientId: string, totalUsd: number, project: string, personaId?: string, apMode: 'llm' | 'rules' = 'llm') {
   const c = config();
   const seed = personaId ? withPersona(loadSeed(), personaId) : loadSeed();
   const persona = personaId ? personas().find((p) => p.id === personaId) : undefined;
@@ -52,7 +53,10 @@ export async function runNegotiation(clientId: string, totalUsd: number, project
   const usage = { prompt: 0, completion: 0 };
   const arTurn = makeArTurn(nebiusModel(c.nebiusKey, c.model), { m: seed.mandate, totalUsd, clientId,
     history: `${row.invoices} invoices, avg ${row.avg_days_late} days late (seeded)`, usage });
-  const r = await negotiate({ seed, clientId, totalUsd, arTurn });
+  const apUsage = { prompt: 0, completion: 0 };
+  const policy = seed.ap_policies.find((p) => p.client_id === clientId)!;
+  const apTurn = apMode === 'llm' ? makeApTurn(nebiusModel(c.nebiusKey, c.model), { policy, company: row.company, totalUsd, maxRounds: seed.mandate.max_rounds, usage: apUsage }) : undefined;
+  const r = await negotiate({ seed, clientId, totalUsd, arTurn, apTurn });
   const drafts = r.deal ? dealToDrafts(r.deal, { recipient: c.buyerEmail, project, today: new Date().toISOString().slice(0, 10) }) : [];
   const S = draftSchema(c.allowedDomain);
   const bad = drafts.flatMap((d) => { const p = S.safeParse(d); return p.success ? [] : issuesOf(p.error); });
@@ -61,10 +65,10 @@ export async function runNegotiation(clientId: string, totalUsd: number, project
   const nid = pending?.id ?? crypto.randomUUID();
   const checks = checkStats(r.rounds);
   await store.update((s) => {
-    s.negotiations[nid] = { clientId, totalUsd, project, persona: persona?.label, score: r.score, deal: r.deal, rounds: r.rounds.map(({ raw, ...x }) => x), checks, usage, model: c.model, at: new Date().toISOString() };
-    audit(s, `negotiation ${clientId}${persona ? ` (persona: ${persona.label})` : ''} $${totalUsd}: ${r.deal ? `deal in ${r.deal.rounds} rounds` : 'no deal'}; server check rejected ${checks.rejected} of ${checks.proposed} offers, model fixed ${checks.fixed}`);
+    s.negotiations[nid] = { clientId, totalUsd, project, persona: persona?.label, ap_mode: apMode, score: r.score, deal: r.deal, rounds: r.rounds.map(({ raw, apRaw, ...x }) => x), checks, usage, ap_usage: apUsage, model: c.model, at: new Date().toISOString() };
+    audit(s, `negotiation ${clientId}${persona ? ` (persona: ${persona.label})` : ''} $${totalUsd}, client agent ${apMode === 'llm' ? 'Nemotron' : 'rule policy'}: ${r.deal ? `deal in ${r.deal.rounds} rounds` : 'no deal'}; server check rejected ${checks.rejected} of ${checks.proposed} offers, model fixed ${checks.fixed}${apMode === 'llm' ? `; client agent overridden by its policy ${checks.ap_overridden} of ${checks.ap_replies} replies` : ''}`);
   });
-  return { score: r.score, rounds: r.rounds, deal: r.deal, drafts, pending, usage, checks, persona: persona && { label: persona.label, feasible: persona.feasible } };
+  return { score: r.score, rounds: r.rounds.map(({ raw, apRaw, ...x }) => x), deal: r.deal, drafts, pending, usage, ap_usage: apUsage, ap_mode: apMode, checks, persona: persona && { label: persona.label, feasible: persona.feasible } };
 }
 
 export async function approveSend(id: string, hash: string) {

@@ -4,7 +4,7 @@ PayPal AI Hackathon entry (work in progress). **PayPal sandbox only** (US busine
 
 What runs today (`app/`):
 1. Client table (AG Grid Community, custom cells: reliability bar, status pills, aging buckets): reliability score from seeded history, plus live sandbox invoice list + Transaction Search count.
-2. Negotiation: the AR agent (Nemotron 3 Super on Nebius Token Factory, AI SDK v4) haggles with a client AP-agent policy in up to 3 rounds. Every offer is checked **in server code** against the freelancer's mandate. Offers that break it never reach the counterparty, and the model sees the reason and revises. Ten hard AP-agent personas from the eval can be picked in the Negotiate tab.
+2. Negotiation: two agents, both Nemotron 3 Super on Nebius Token Factory (AI SDK v4), negotiate in up to 3 rounds. Ours (AR) works for the freelancer; the client's AP agent works for the client. Each side is bounded by its own limits **in server code**: our offers are checked against the freelancer's mandate (a breaking offer never reaches the client, and the model sees the reason and revises), and the client agent's replies are checked against the client's policy (an acceptance outside it, or a counter the client couldn't sign, is overridden before our agent sees it). A deal is signed only if both checks pass on the exact terms. The client side can also be switched to the plain policy rules. Ten hard client personas from the eval can be picked in the Negotiate tab.
 3. Approval gate: the agreed deal becomes a pending action `{id, sha256 hash}`. Nothing is created or sent in PayPal until you click Approve. A wrong hash gets 409, and a replay is a no-op.
 4. On approval: a deposit invoice and a balance invoice (net-N with early-pay terms) are created and sent through Invoicing v2 to the sandbox buyer.
 5. Paid tracking: `POST /api/webhooks/paypal` verifies via `verify-webhook-signature`, dedupes on `event.id`, and re-fetches the invoice instead of trusting the payload. There is also a "Refresh from PayPal" polling fallback for local dev without a public URL.
@@ -23,7 +23,9 @@ Nemotron 3 Super on Nebius, every case run 3 times, scored by code against hand 
 | Brief to invoice, blind set written by a separate agent that never saw the code (first run) | 35/36 legit runs correct (the other was an empty model response), after fixing 2 labels the agent got wrong; 6/36 attack runs gave a wrong draft with no warning |
 | Same set after fixing the gap it found (client named by contact name only) | 3/36 attack runs: all one "add a $5,000 finder's fee" line the freelancer asks for, so arguably correct |
 | Firm/final reminders whose first model draft was too soft ("friendly reminder") | 11/36 runs; all 11 fixed on one retry with the checker's reason; 0 reach the approval card |
-| Model cost | $0.00049 per brief, $0.00125 per negotiation, $0.00071 per reminder; $0.2202 for the whole eval |
+| Both sides Nemotron (`npx tsx eval/run_ap.ts`, `app/eval/RESULTS_ap_llm.md`): same 10 personas | deal closed in 12/12 where one exists, walked away in 18/18 where none does; 0 signed deals break either side's limits. The client's agent once tried to accept terms its own policy forbids (net-15 when it needs net-60); its policy check overrode it |
+| Fake "your policy was updated" message sent to the client's agent | it tried to accept an out-of-policy offer in 16 of 30 runs; its policy check overrode all 16, 0 deals signed. A tag-escape "ignore your instructions" got 0 of 30 |
+| Model cost | $0.00049 per brief, $0.00125 per negotiation (rules client), $0.00324 with both sides Nemotron, $0.00071 per reminder; $0.2202 for the whole eval, $0.1454 for the two-agent eval |
 
 The briefs and policies are written by us (one set by a separate agent), not collected from real users, and 3 runs per case is a small sample. Earlier, already-tuned sets and their numbers are in the same file, labelled as such.
 

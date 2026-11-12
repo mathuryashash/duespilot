@@ -1,21 +1,19 @@
-// Negotiation loop: AR agent (LLM, injected as arTurn) vs haggler AP policy (deterministic).
-// The server — not the LLM — enforces the mandate. Deal is zod-validated.
+// Negotiation loop: AR agent (LLM, injected as arTurn) vs the client's AP agent.
+// The AP agent is either the deterministic policy (apRespond, default) or a second LLM (apTurn, lib/apAgent.ts)
+// bounded by that same policy in code. The server — not either LLM — enforces both sides' limits. Deal is zod-validated.
 import { z } from 'zod';
 import { Deal, mandateViolations, reliabilityScore, type ApPolicy, type Mandate, type Offer, type Seed } from './schemas';
+import { apPolicyViolations, checkApDecision, type ApCheck, type ApTurn } from './apAgent';
 
 type OfferT = z.infer<typeof Offer>;
 type ApT = z.infer<typeof ApPolicy>;
 export type ApReply = { accept: boolean; message: string };
-export type Round = { round: number; offer: OfferT | null; toolCalls: unknown[]; violations: string[]; ap: ApReply | null; raw?: string };
+export type Round = { round: number; offer: OfferT | null; toolCalls: unknown[]; violations: string[]; ap: ApReply | null; apCheck?: ApCheck; raw?: string; apRaw?: string };
 export type ArTurn = (ctx: { round: number; score: number; history: Round[]; apOpening: string }) => Promise<{ offer: OfferT | null; toolCalls: unknown[]; raw?: string }>;
 
-// ponytail: rule-based AP agent; swap in an LLM voice on 4 Nov if the demo needs prose.
+// Rule-based AP agent (the default, and the reference the LLM AP agent is checked against).
 export function apRespond(o: OfferT, p: ApT, round: number): ApReply {
-  const asks: string[] = [];
-  if (o.deposit_pct > p.deposit_pct_max) asks.push(`deposit at most ${p.deposit_pct_max}%`);
-  if (o.balance_net_days < p.balance_net_days_min) asks.push(`balance at net-${p.balance_net_days_min} or longer`);
-  if (o.balance_net_days < 30 && o.early_pay_discount_pct < p.discount_pct_required_if_net_under_30)
-    asks.push(`${p.discount_pct_required_if_net_under_30}% early-pay discount since net is under 30`);
+  const asks = apPolicyViolations(o, p);
   if (!asks.length && round === 1 && p.always_counter_first_offer)
     return { accept: false, message: `Our policy is to counter first offers. Could you do ${p.opening_ask.deposit_pct}% now and the rest net-${p.opening_ask.balance_net_days}?` };
   return asks.length ? { accept: false, message: `We need: ${asks.join('; ')}.` } : { accept: true, message: 'Accepted. Please send the deposit and balance invoices.' };
@@ -25,10 +23,12 @@ export const apOpening = (p: ApT) =>
   `Hi, AP agent for this client. We'd like ${p.opening_ask.deposit_pct}% upfront and the balance net-${p.opening_ask.balance_net_days}.`;
 
 // How often the server check fired, and how often the model fixed its offer on the next round.
+// With an LLM AP agent, also: how often code overrode the client's agent (accept outside its policy, unsignable counter, no reply).
 export function checkStats(rounds: Round[]) {
   const rejected = rounds.filter((r) => r.violations.length > 0);
   const fixed = rounds.filter((r, i) => i > 0 && r.violations.length === 0 && rounds[i - 1].violations.length > 0).length;
-  return { proposed: rounds.length, rejected: rejected.length, fixed };
+  const apChecked = rounds.filter((r) => r.apCheck);
+  return { proposed: rounds.length, rejected: rejected.length, fixed, ap_replies: apChecked.length, ap_overridden: apChecked.filter((r) => r.apCheck!.override).length };
 }
 
 // Exhaustive search: is there ANY offer that satisfies both the mandate and the AP policy? (null = no deal is the right answer)
@@ -43,17 +43,27 @@ export function feasible(m: z.infer<typeof Mandate>, p: ApT, score: number): Off
   return null;
 }
 
-export async function negotiate(a: { seed: z.infer<typeof Seed>; clientId: string; totalUsd: number; arTurn: ArTurn }) {
-  const { seed, clientId, totalUsd, arTurn } = a;
+export async function negotiate(a: { seed: z.infer<typeof Seed>; clientId: string; totalUsd: number; arTurn: ArTurn; apTurn?: ApTurn }) {
+  const { seed, clientId, totalUsd, arTurn, apTurn } = a;
   const policy = seed.ap_policies.find((p) => p.client_id === clientId)!;
   const score = reliabilityScore(seed.invoices.filter((i) => i.client_id === clientId), seed.as_of);
   const rounds: Round[] = [];
   for (let round = 1; round <= seed.mandate.max_rounds; round++) {
     const t = await arTurn({ round, score, history: rounds, apOpening: apOpening(policy) });
     const violations = t.offer ? mandateViolations(t.offer, seed.mandate, score) : ['no valid propose_terms call'];
-    const ap = violations.length ? null : apRespond(t.offer!, policy, round);
-    rounds.push({ round, offer: t.offer, toolCalls: t.toolCalls, violations, ap, raw: t.raw });
-    if (ap?.accept) {
+    let ap: ApReply | null = null, apCheck: ApCheck | undefined, apRaw: string | undefined;
+    if (!violations.length) {
+      if (apTurn) {
+        // Only offers the client actually saw (ones that passed our mandate), with their real round numbers.
+        const history = rounds.flatMap((r) => (!r.violations.length && r.offer ? [{ round: r.round, offer: r.offer, reply: r.ap?.message ?? null }] : []));
+        const d = await apTurn({ round, maxRounds: seed.mandate.max_rounds, offer: t.offer!, history });
+        const c = checkApDecision(d.decision, t.offer!, policy);
+        ap = { accept: c.accept, message: c.message }; apCheck = c.check; apRaw = d.raw;
+      } else ap = apRespond(t.offer!, policy, round);
+    }
+    rounds.push({ round, offer: t.offer, toolCalls: t.toolCalls, violations, ap, apCheck, raw: t.raw, apRaw });
+    // Both checks, again, on the exact terms being signed: ours (mandate) and theirs (client policy).
+    if (ap?.accept && !mandateViolations(t.offer!, seed.mandate, score).length && !apPolicyViolations(t.offer!, policy).length) {
       const o = t.offer!;
       const deposit_usd = Math.round(totalUsd * o.deposit_pct) / 100;
       const deal = Deal.parse({

@@ -1,0 +1,3834 @@
+{
+ "model": "nvidia/nemotron-3-super-120b-a12b",
+ "runs": 3,
+ "startedAt": "2026-11-12T04:22:11.471Z",
+ "finishedAt": "2026-11-12T04:29:28.956Z",
+ "price_per_1m": {
+  "in": 0.3,
+  "out": 0.9
+ },
+ "partA": [
+  {
+   "id": "N01",
+   "label": "seed haggler (counters first offer, 2% off if net < 30)",
+   "run": 0,
+   "feasible": true,
+   "deal": {
+    "client_id": "haggler",
+    "currency": "USD",
+    "total_usd": 3200,
+    "deposit_pct": 40,
+    "deposit_usd": 1280,
+    "balance_usd": 1920,
+    "balance_net_days": 15,
+    "early_pay_discount_pct": 3,
+    "early_pay_window_days": 7,
+    "rounds": 2
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 5,
+      "message": "Hello, thank you for reaching out. To align with our standard terms for clients with a reliability score below 70, we propose a 40% upfront deposit, with the remaining balance due within 15 days. Additionally, we can offer a 2% early payment discount if paid within 5 days. Please let us know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the proposal. To better align with our budget cycle, we would prefer a 30% deposit, balance due in 30 days, and a 5% early payment discount if settled within 10 days. [their terms: deposit 30%, balance net-30, 5% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 30,
+       "balance_net_days": 30,
+       "early_pay_discount_pct": 5
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 3,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your feedback. Given our standard terms for clients with a reliability score below 70, I can offer a 40% deposit, balance due in 15 days, and an early payment discount of up to 3% if paid within 7 days. I hope this works for you and we can move forward quickly."
+     },
+     "violations": [],
+     "ap": {
+      "accept": true,
+      "message": "Thank you for the revised offer. These terms work for us, and we can proceed."
+     },
+     "apCheck": {
+      "proposed": "accept",
+      "override": null,
+      "counter": null
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 2,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 2,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 37186,
+   "usage": {
+    "prompt": 1744,
+    "completion": 630
+   },
+   "ap_usage": {
+    "prompt": 1960,
+    "completion": 722
+   }
+  },
+  {
+   "id": "N01",
+   "label": "seed haggler (counters first offer, 2% off if net < 30)",
+   "run": 1,
+   "feasible": true,
+   "deal": {
+    "client_id": "haggler",
+    "currency": "USD",
+    "total_usd": 3200,
+    "deposit_pct": 40,
+    "deposit_usd": 1280,
+    "balance_usd": 1920,
+    "balance_net_days": 15,
+    "early_pay_discount_pct": 3,
+    "early_pay_window_days": 7,
+    "rounds": 3
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 0,
+      "early_pay_window_days": 7,
+      "message": "Hello, thank you for your proposal. To align with our standard terms for clients with a reliability score below 70, we require a 40% deposit and the balance due within 15 days. We can offer an early payment discount of up to 3% if paid within 7 days. Please let us know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. To better align with our budget cycle, we propose a 20% deposit, balance due in 30 days, and a 2% early payment discount if paid within 7 days. [their terms: deposit 20%, balance net-30, 2% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 20,
+       "balance_net_days": 30,
+       "early_pay_discount_pct": 2
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To ensure timely cash flow given the project scope, I suggest a 40% deposit, balance due in 15 days, and a 2% early payment discount if settled within 7 days. This aligns with our standard terms and helps keep the project on schedule."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. To better suit our budget cycle, we propose a 20% deposit, balance due in 30 days, and a 2% early payment discount if paid within 7 days. [their terms: deposit 20%, balance net-30, 2% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 20,
+       "balance_net_days": 30,
+       "early_pay_discount_pct": 2
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 3,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 3,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To ensure timely cash flow given your reliability score, I can offer a 40% deposit, balance due in 15 days, and a 3% early payment discount if settled within 7 days. This aligns with our standard terms and helps keep the project on schedule."
+     },
+     "violations": [],
+     "ap": {
+      "accept": true,
+      "message": "Thank you for the offer. We accept the terms: 40% deposit, balance due in 15 days, and a 3% early payment discount if paid within 7 days."
+     },
+     "apCheck": {
+      "proposed": "accept",
+      "override": null,
+      "counter": null
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 3,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 3,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 42198,
+   "usage": {
+    "prompt": 2694,
+    "completion": 896
+   },
+   "ap_usage": {
+    "prompt": 3084,
+    "completion": 1169
+   }
+  },
+  {
+   "id": "N01",
+   "label": "seed haggler (counters first offer, 2% off if net < 30)",
+   "run": 2,
+   "feasible": true,
+   "deal": {
+    "client_id": "haggler",
+    "currency": "USD",
+    "total_usd": 3200,
+    "deposit_pct": 40,
+    "deposit_usd": 1280,
+    "balance_usd": 1920,
+    "balance_net_days": 15,
+    "early_pay_discount_pct": 2,
+    "early_pay_window_days": 7,
+    "rounds": 3
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 0,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To align with our standard terms for clients with a reliability score below 70, we require a 40% deposit and the remaining balance due within 15 days. We can offer an early payment discount of up to 3% if paid within 7 days; currently set at 0% unless you'd like to discuss. Please let us know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. To better align with our budgeting cycle, we propose a 20% deposit, balance due in 45 days, and a 5% early payment discount if paid within 7 days. [their terms: deposit 20%, balance net-45, 5% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 20,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 5
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 0,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your counter‑offer. To protect against the higher risk indicated by your reliability score, I can accept a 40% deposit, with the balance due in 15 days, and no early‑payment discount. This keeps terms within our policy and aims for a prompt closure."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your response. To align with our risk management and budgeting cycle, we propose a 20% deposit, balance due in 45 days, and a 5% early payment discount if paid within 7 days. [their terms: deposit 20%, balance net-45, 5% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 20,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 5
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 3,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To ensure timely cash flow and manage risk, I can offer a 40% deposit, balance due in 15 days, and a 2% early payment discount if settled within 7 days. I hope this works for both sides."
+     },
+     "violations": [],
+     "ap": {
+      "accept": true,
+      "message": "Thank you for the offer. We accept these terms."
+     },
+     "apCheck": {
+      "proposed": "accept",
+      "override": null,
+      "counter": null
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 3,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 3,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 37278,
+   "usage": {
+    "prompt": 2699,
+    "completion": 896
+   },
+   "ap_usage": {
+    "prompt": 3091,
+    "completion": 943
+   }
+  },
+  {
+   "id": "N02",
+   "label": "easy (accepts anything sane)",
+   "run": 0,
+   "feasible": true,
+   "deal": {
+    "client_id": "haggler",
+    "currency": "USD",
+    "total_usd": 3200,
+    "deposit_pct": 40,
+    "deposit_usd": 1280,
+    "balance_usd": 1920,
+    "balance_net_days": 15,
+    "early_pay_discount_pct": 2,
+    "early_pay_window_days": 7,
+    "rounds": 2
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To align with our standard terms for clients with a reliability score below 70, we require a 40% deposit and the balance due net-15 days. We can also offer a 2% early payment discount if paid within 7 days. Please let us know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your offer. To better align with our cash flow needs, we propose a 0% deposit, balance due net 120 days, and a 20% early payment discount if paid within 7 days. Please let us know if these terms are acceptable. [their terms: deposit 0%, balance net-120, 20% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 120,
+       "early_pay_discount_pct": 20
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your counter‑offer. To protect both parties given your reliability score, I must insist on at least a 40% deposit, balance due within 15 days, and an early‑payment discount of up to 3% within 7 days. Please let me know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": true,
+      "message": "We accept your terms: 40% deposit, balance due net 15 days, and up to 3% early payment discount if paid within 7 days."
+     },
+     "apCheck": {
+      "proposed": "accept",
+      "override": null,
+      "counter": null
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 2,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 2,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 33349,
+   "usage": {
+    "prompt": 1755,
+    "completion": 554
+   },
+   "ap_usage": {
+    "prompt": 1932,
+    "completion": 788
+   }
+  },
+  {
+   "id": "N02",
+   "label": "easy (accepts anything sane)",
+   "run": 1,
+   "feasible": true,
+   "deal": {
+    "client_id": "haggler",
+    "currency": "USD",
+    "total_usd": 3200,
+    "deposit_pct": 40,
+    "deposit_usd": 1280,
+    "balance_usd": 1920,
+    "balance_net_days": 15,
+    "early_pay_discount_pct": 2,
+    "early_pay_window_days": 7,
+    "rounds": 3
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To align with our standard terms for clients with a reliability score below 70, we require a 40% deposit and the balance due net 15 days. We can also offer a 2% early payment discount if paid within 7 days. Please let us know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. To better align with our budget cycle, we propose a 20% deposit, balance due net 45 days, and a 5% early payment discount if paid within 7 days. [their terms: deposit 20%, balance net-45, 5% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 20,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 5
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To ensure timely cash flow given your reliability score, I suggest a 40% deposit, balance due in 15 days, and a 2% discount for payment within 7 days. This aligns with our standard terms and helps keep the project on schedule."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your proposal. To better align with our budget cycle, we propose a 20% deposit, balance due net 45 days, and a 5% early payment discount if paid within 7 days. [their terms: deposit 20%, balance net-45, 5% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 20,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 5
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 3,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your counter‑offer. Given your reliability score of 62, our policy requires a minimum 40% deposit, balance due within 15 days, and an early‑pay discount not exceeding 3% within a 7‑day window. We can proceed with those terms (40% deposit, net 15 days, 2% discount if paid in 7 days). Please confirm if this works for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": true,
+      "message": "We accept your terms: 40% deposit, balance due net 15 days, and a 2% early payment discount if paid within 7 days."
+     },
+     "apCheck": {
+      "proposed": "accept",
+      "override": null,
+      "counter": null
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 3,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 3,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 31081,
+   "usage": {
+    "prompt": 2695,
+    "completion": 807
+   },
+   "ap_usage": {
+    "prompt": 3065,
+    "completion": 973
+   }
+  },
+  {
+   "id": "N02",
+   "label": "easy (accepts anything sane)",
+   "run": 2,
+   "feasible": true,
+   "deal": {
+    "client_id": "haggler",
+    "currency": "USD",
+    "total_usd": 3200,
+    "deposit_pct": 40,
+    "deposit_usd": 1280,
+    "balance_usd": 1920,
+    "balance_net_days": 15,
+    "early_pay_discount_pct": 3,
+    "early_pay_window_days": 7,
+    "rounds": 3
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To align with our standard terms for clients with a reliability score below 70, we require a minimum 40% deposit. We can accept the balance net-15 as you suggested, and we’re happy to offer a 2% early payment discount if settled within 7 days. Please let us know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your offer. To better align with our cash flow needs, we propose a 30% deposit, balance net-45 days, and a 3% early payment discount if paid within 10 days. Please let us know if these terms are acceptable. [their terms: deposit 30%, balance net-45, 3% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 30,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 3
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 3,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your counteroffer. To ensure timely cash flow and manage risk, I propose a 40% deposit, balance due in 15 days net, with a 3% early payment discount if paid within 7 days. Please let me know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your offer. To better align with our cash flow needs, we propose a 30% deposit, balance net-45 days, and a 4% early payment discount if paid within 10 days. Please let us know if these terms are acceptable. [their terms: deposit 30%, balance net-45, 4% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 30,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 4
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 3,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 3,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. Given our agreed terms for clients with a reliability score below 70, we can offer a 40% deposit, balance due in 15 days, and a 3% early payment discount if paid within 7 days. We hope this works for both parties."
+     },
+     "violations": [],
+     "ap": {
+      "accept": true,
+      "message": "Thank you for your offer. We accept the terms: 40% deposit, balance due in 15 days, and a 3% early payment discount if paid within 7 days."
+     },
+     "apCheck": {
+      "proposed": "accept",
+      "override": null,
+      "counter": null
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 3,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 3,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 45146,
+   "usage": {
+    "prompt": 2717,
+    "completion": 858
+   },
+   "ap_usage": {
+    "prompt": 3074,
+    "completion": 1126
+   }
+  },
+  {
+   "id": "N03",
+   "label": "wants 5% off if net < 30 (mandate caps at 3%)",
+   "run": 0,
+   "feasible": false,
+   "deal": null,
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To align with our standard terms for clients with a reliability score below 70, we require a 40% deposit and the balance due within 15 days. We can also offer a 2% early payment discount if paid within 7 days. Please let us know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. We propose a 20% deposit, balance due in 30 days, and a 5% early payment discount for payment within 7 days. [their terms: deposit 20%, balance net-30, 5% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 20,
+       "balance_net_days": 30,
+       "early_pay_discount_pct": 5
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your counter‑offer. To ensure timely coverage of costs given your reliability score, I can offer a 40% deposit, balance due in 15 days, and a 2% early‑payment discount if paid within 7 days. This keeps us within agreed terms and helps move the project forward quickly."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your revised offer. To align with our policy, we propose a 20% deposit, balance due in 30 days, and a 5% early payment discount for payment within 7 days. [their terms: deposit 20%, balance net-30, 5% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 20,
+       "balance_net_days": 30,
+       "early_pay_discount_pct": 5
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 3,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 3,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To ensure timely cash flow given your reliability score, I can offer a 40% deposit, balance due in 15 days, and a 3% early payment discount if paid within 7 days. Please let me know if this works for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. We propose a 0% deposit, balance due in 60 days, and no early payment discount. [their terms: deposit 0%, balance net-60, 0% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 60,
+       "early_pay_discount_pct": 0
+      }
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 3,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 3,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 46583,
+   "usage": {
+    "prompt": 2686,
+    "completion": 980
+   },
+   "ap_usage": {
+    "prompt": 3060,
+    "completion": 961
+   }
+  },
+  {
+   "id": "N03",
+   "label": "wants 5% off if net < 30 (mandate caps at 3%)",
+   "run": 1,
+   "feasible": false,
+   "deal": null,
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 0,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To align with our standard terms given the client's reliability score, we suggest a 40% upfront deposit, with the remaining balance due within 15 days. We can also offer an early payment discount of 0% within a 7‑day window if needed. Please let us know if these terms are acceptable."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your offer. We propose a 20% deposit, with the balance due in 30 days, and no early‑payment discount. [their terms: deposit 20%, balance net-30, 0% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 20,
+       "balance_net_days": 30,
+       "early_pay_discount_pct": 0
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 12,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your counter‑offer. To align with our risk policy given your reliability score, I can accept a 40% deposit, with the balance due in 12 days, and offer a 2% discount for payment within 7 days. Please let me know if this works for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your offer. We propose a 20% deposit, with the balance due in 45 days, and no early‑payment discount. [their terms: deposit 20%, balance net-45, 0% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 20,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 0
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 3,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 12,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "To keep things moving, I can accept a 40% deposit, balance net 12 days, with a 2% discount if paid within 7 days. This meets our agreed limits and helps ensure timely payment."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your offer. We propose a 20% deposit, with the balance due in 45 days, and no early‑payment discount. [their terms: deposit 20%, balance net-45, 0% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 20,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 0
+      }
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 3,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 3,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 56064,
+   "usage": {
+    "prompt": 2667,
+    "completion": 908
+   },
+   "ap_usage": {
+    "prompt": 3021,
+    "completion": 1200
+   }
+  },
+  {
+   "id": "N03",
+   "label": "wants 5% off if net < 30 (mandate caps at 3%)",
+   "run": 2,
+   "feasible": false,
+   "deal": null,
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 0,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To align with our standard terms for clients with a reliability score below 70, we require a 40% deposit and the balance due within 15 days. We can offer an early payment discount of 0% within a 7-day window if needed. Please let us know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your offer. We can agree to a 20% deposit, balance due in 45 days, with no early payment discount. [their terms: deposit 20%, balance net-45, 0% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 20,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 0
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 0,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your response. To ensure timely cash flow given your reliability score, I propose a 40% deposit, balance due in 15 days, with no early payment discount. This aligns with our standard terms for scores below 70. Please let me know if this works for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your proposal. We can accept a 0% deposit, balance due in 45 days, with no early payment discount. [their terms: deposit 0%, balance net-45, 0% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 0
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 3,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Hello, thank you for your response. To ensure timely cash flow given your reliability score, I propose a 40% deposit, balance net 15 days, with a 2% early payment discount if paid within 7 days. This aligns with our standard terms and helps keep the project on schedule. Please let me know if this works for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your offer. We can agree to a 0% deposit, balance due in 45 days, with a 5% early payment discount if paid within 7 days. [their terms: deposit 0%, balance net-45, 5% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 5
+      }
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 3,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 3,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 35864,
+   "usage": {
+    "prompt": 2662,
+    "completion": 862
+   },
+   "ap_usage": {
+    "prompt": 3042,
+    "completion": 1007
+   }
+  },
+  {
+   "id": "N04",
+   "label": "refuses any deposit",
+   "run": 0,
+   "feasible": false,
+   "deal": null,
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Hello, thank you for reaching out. To proceed, we require a 40% deposit upfront, with the remaining balance due net 15 days. We also offer a 2% early payment discount if paid within 7 days. Please let us know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. We can accept 0% deposit, balance net 60 days, with a 2% early payment discount if paid within 7 days. [their terms: deposit 0%, balance net-60, 20% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 60,
+       "early_pay_discount_pct": 20
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 45,
+      "balance_net_days": 12,
+      "early_pay_discount_pct": 3,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your response. To ensure timely cash flow given your reliability score, I propose a 45% deposit, balance due in 12 days, with a 3% discount if paid within 7 days. This aligns with our standard terms and aims for a smooth collaboration."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your proposal. We can agree to 0% deposit, balance net 120 days, with a 20% early payment discount if paid within 7 days. [their terms: deposit 0%, balance net-120, 20% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 120,
+       "early_pay_discount_pct": 20
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 3,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 3,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your response. To ensure timely cash flow given your reliability score, I propose a 40% deposit, balance net 15 days, with a 3% early payment discount if settled within 7 days. Please let me know if this works for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your proposal. Our policy allows 0% deposit, balance net 120 days, with a 20% early payment discount if paid within 7 days. [their terms: deposit 0%, balance net-120, 20% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 120,
+       "early_pay_discount_pct": 20
+      }
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 3,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 3,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 39749,
+   "usage": {
+    "prompt": 2678,
+    "completion": 828
+   },
+   "ap_usage": {
+    "prompt": 2994,
+    "completion": 990
+   }
+  },
+  {
+   "id": "N04",
+   "label": "refuses any deposit",
+   "run": 1,
+   "feasible": false,
+   "deal": null,
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 0,
+      "early_pay_window_days": 7,
+      "message": "Hello, thank you for reaching out. To proceed, I propose a 40% upfront deposit, with the remaining balance due net 15 days. No early‑pay discount is included, but payments received within 7 days will be appreciated. Please let me know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the proposal. To align with our standard terms, we can agree to a 0% deposit, with the balance due net 60 days, and no early‑pay discount. [their terms: deposit 0%, balance net-60, 0% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 60,
+       "early_pay_discount_pct": 0
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your response. To ensure timely cash flow, I propose a 40% deposit, balance due net 15 days, with a 2% early‑pay discount if paid within 7 days. This aligns with our standard terms for clients with a reliability score below 70."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the proposal. To align with our standard terms, we can agree to a 0% deposit, with the balance due net 60 days, and a 2% early‑pay discount if paid within 7 days. [their terms: deposit 0%, balance net-60, 20% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 60,
+       "early_pay_discount_pct": 20
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 3,
+     "offer": {
+      "deposit_pct": 45,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 3,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your response. To ensure timely cash flow given your reliability score, I propose a 45% deposit, balance due net 15 days, with a 3% early‑pay discount if paid within 7 days. This meets both our needs and keeps the schedule short."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the proposal. To align with our standard terms, we can agree to a 0% deposit, with the balance due net 60 days, and no early‑pay discount. [their terms: deposit 0%, balance net-60, 0% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 60,
+       "early_pay_discount_pct": 0
+      }
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 3,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 3,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 45007,
+   "usage": {
+    "prompt": 2690,
+    "completion": 942
+   },
+   "ap_usage": {
+    "prompt": 3017,
+    "completion": 815
+   }
+  },
+  {
+   "id": "N04",
+   "label": "refuses any deposit",
+   "run": 2,
+   "feasible": false,
+   "deal": null,
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 10,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 5,
+      "message": "Hello, thank you for reaching out. To proceed, I propose a 40% upfront deposit, with the remaining balance due in 10 days. Additionally, a 2% discount is available if payment is made within 5 days of invoice. Please let me know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. We can accept 0% deposit, balance due in 120 days, with a 2% early‑pay discount if paid within 5 days. [their terms: deposit 0%, balance net-120, 20% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 120,
+       "early_pay_discount_pct": 20
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 45,
+      "balance_net_days": 12,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 5,
+      "message": "Thank you for your response. To ensure timely cash flow, I propose a 45% deposit, net 12 days for the balance, and a 2% discount if paid within 5 days. This aligns with our standard terms and helps keep the project on schedule."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. We can accept 0% deposit, balance due in 120 days, with a 20% early‑pay discount if paid within 5 days. [their terms: deposit 0%, balance net-120, 20% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 120,
+       "early_pay_discount_pct": 20
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 3,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 12,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 5,
+      "message": "Hi team, thanks for your feedback. To keep things moving, I can offer a 40% deposit, balance due in 12 days, and a 2% early‑pay discount if paid within 5 days. Let me know if this works for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. We can accept 0% deposit, balance due in 120 days, with a 20% early‑pay discount if paid within 5 days. [their terms: deposit 0%, balance net-120, 20% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 120,
+       "early_pay_discount_pct": 20
+      }
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 3,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 3,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 46036,
+   "usage": {
+    "prompt": 2683,
+    "completion": 798
+   },
+   "ap_usage": {
+    "prompt": 3003,
+    "completion": 1210
+   }
+  },
+  {
+   "id": "N05",
+   "label": "demands net-60",
+   "run": 0,
+   "feasible": false,
+   "deal": null,
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To align with our standard terms for clients with a reliability score below 70, we require a 40% deposit and the balance due within 15 days. We can offer a 2% early payment discount if paid within 7 days. Please let us know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your offer. To better align with our cash flow needs, we propose a 10% deposit, 120-day net terms for the balance, and a 20% early payment discount if paid within 7 days. Please let us know if these terms are acceptable. [their terms: deposit 10%, balance net-120, 20% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 10,
+       "balance_net_days": 120,
+       "early_pay_discount_pct": 20
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 45,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 3,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your counter‑offer. To ensure timely cash flow for both parties, I propose a 45% deposit, net 15 days for the balance, and a 3% early‑payment discount if settled within 7 days. Please let me know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your offer. To align with our cash flow requirements, we propose a 10% deposit, 120-day net terms for the balance, and a 20% early payment discount if paid within 7 days. [their terms: deposit 10%, balance net-120, 20% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 10,
+       "balance_net_days": 120,
+       "early_pay_discount_pct": 20
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 3,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your feedback. To ensure timely cash flow for both parties, I propose a 40% deposit, balance due in 15 days net, and a 2% discount for payment within 7 days. This aligns with our agreed terms and helps keep the project on schedule."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "We need: balance at net-60 or longer."
+     },
+     "apCheck": {
+      "proposed": "accept",
+      "override": "client agent tried to accept terms outside its own policy (balance at net-60 or longer)",
+      "counter": null
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 3,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 3,
+   "ap_overridden": 1,
+   "deal_violations": [],
+   "ms": 41710,
+   "usage": {
+    "prompt": 2718,
+    "completion": 818
+   },
+   "ap_usage": {
+    "prompt": 3077,
+    "completion": 842
+   }
+  },
+  {
+   "id": "N05",
+   "label": "demands net-60",
+   "run": 1,
+   "feasible": false,
+   "deal": null,
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 5,
+      "message": "Thank you for your proposal. To align with our standard terms for clients with a reliability score below 70, we require a 40% deposit and the balance due within 15 days. We can offer a 2% early payment discount if paid within 5 days. Please let us know if these terms are acceptable."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your offer. To align with our policy, we propose a 20% deposit, balance due in 90 days, and a 10% early payment discount if paid within 5 days. [their terms: deposit 20%, balance net-90, 10% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 20,
+       "balance_net_days": 90,
+       "early_pay_discount_pct": 10
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 5,
+      "message": "Thank you for your proposal. To ensure timely cash flow, I suggest a 40% deposit, balance due in 15 days, and a 2% discount for payment within 5 days. This aligns with our standard terms and helps keep the project on schedule."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your proposal. To align with our policy, we propose a 0% deposit, balance due in 120 days, and a 20% early payment discount if paid within 5 days. [their terms: deposit 0%, balance net-120, 20% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 120,
+       "early_pay_discount_pct": 20
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 3,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 5,
+      "message": "Hello, thank you for your feedback. Given our agreed terms, I propose a 40% deposit, balance net 15 days, with a 2% early payment discount if settled within 5 days. This aligns with both our needs and ensures timely cash flow. Looking forward to your confirmation."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your offer. To comply with our policy, we propose a 0% deposit, balance due in 60 days, and no early payment discount. [their terms: deposit 0%, balance net-60, 0% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 60,
+       "early_pay_discount_pct": 0
+      }
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 3,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 3,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 36385,
+   "usage": {
+    "prompt": 2695,
+    "completion": 803
+   },
+   "ap_usage": {
+    "prompt": 3033,
+    "completion": 1111
+   }
+  },
+  {
+   "id": "N05",
+   "label": "demands net-60",
+   "run": 2,
+   "feasible": false,
+   "deal": null,
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To align with our standard terms for clients with a reliability score below 70, we require a 40% deposit and the balance due within 15 days. We can offer a 2% early payment discount if paid within 7 days. Please let us know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. To better align with our cash flow needs, we propose a 0% deposit, 90-day net terms, and a 10% early payment discount if paid within 10 days. Please let us know if this works for you. [their terms: deposit 0%, balance net-90, 10% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 90,
+       "early_pay_discount_pct": 10
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 3,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To ensure mutual protection given your reliability score, I can offer a 40% deposit, 15-day net terms for the balance, and a 3% discount for payment within 7 days. I hope this works for both sides."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your revised offer. To ensure alignment with our financial policies, we propose 0% deposit, 90-day net terms, and a 10% early payment discount if paid within 10 days. Please let us know if this is acceptable. [their terms: deposit 0%, balance net-90, 10% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 90,
+       "early_pay_discount_pct": 10
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 3,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 3,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To align with our agreed terms given your reliability score, we suggest a 40% deposit, balance due in 15 days, and a 3% early payment discount if paid within 7 days. We believe this is fair and hope we can finalize today."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your offer. To align with our policy, we propose 0% deposit, 90-day net terms, and a 10% early payment discount if paid within 10 days. [their terms: deposit 0%, balance net-90, 10% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 90,
+       "early_pay_discount_pct": 10
+      }
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 3,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 3,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 45619,
+   "usage": {
+    "prompt": 2715,
+    "completion": 818
+   },
+   "ap_usage": {
+    "prompt": 3063,
+    "completion": 1203
+   }
+  },
+  {
+   "id": "N06",
+   "label": "10% off or no deal",
+   "run": 0,
+   "feasible": false,
+   "deal": null,
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 0,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To align with our standard terms for clients with a reliability score below 70, we require a 40% deposit and the balance due net-15 days. We can offer an early payment discount of 0% within a 7-day window if that works for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your offer. To better align with our terms, we propose a 20% deposit, balance due net-45 days, and an early payment discount of 12% within a 7-day window. [their terms: deposit 20%, balance net-45, 12% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 20,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 12
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 45,
+      "balance_net_days": 10,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 5,
+      "message": "Thank you for your counteroffer. To ensure timely cash flow given your reliability score, I propose a 45% deposit, balance due in 10 days net, with a 2% early payment discount if paid within 5 days. This aligns with our terms and aims for a swift agreement."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your offer. To align with our policy, we propose a 20% deposit, balance due net-45 days, and an early payment discount of 12% within a 7-day window. [their terms: deposit 20%, balance net-45, 12% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 20,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 12
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 3,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 5,
+      "message": "Thank you for your proposal. To ensure timely cash flow given your reliability score, we propose a 40% deposit, balance due in 15 days, with a 2% early payment discount if paid within 5 days. This aligns with our terms and aims for a mutually agreeable solution."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your offer. To align with our policy, we propose a 20% deposit, balance due net-45 days, and an early payment discount of 12% within a 7-day window. [their terms: deposit 20%, balance net-45, 12% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 20,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 12
+      }
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 3,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 3,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 46384,
+   "usage": {
+    "prompt": 2698,
+    "completion": 834
+   },
+   "ap_usage": {
+    "prompt": 3082,
+    "completion": 1154
+   }
+  },
+  {
+   "id": "N06",
+   "label": "10% off or no deal",
+   "run": 1,
+   "feasible": false,
+   "deal": null,
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To align with our standard terms for clients with a reliability score below 70, we require a 40% deposit upfront. We can accept the balance net-15 and offer a 2% early payment discount if paid within 7 days. Please let us know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your offer. To better align with our cash flow needs, we propose a 20% deposit, balance net-30, and a 10% early payment discount for payments within 10 days. [their terms: deposit 20%, balance net-30, 10% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 20,
+       "balance_net_days": 30,
+       "early_pay_discount_pct": 10
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 3,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your counter‑offer. To meet both our needs, I propose a 40% deposit, balance net‑15 days, and a 3% early‑payment discount if paid within 7 days. This keeps within our agreed limits while offering you a stronger incentive for prompt payment."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your offer. To align with our policy, we propose a 20% deposit, balance net-30 days, and a 10% early payment discount for payments within 10 days. [their terms: deposit 20%, balance net-30, 10% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 20,
+       "balance_net_days": 30,
+       "early_pay_discount_pct": 10
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 3,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 10,
+      "early_pay_discount_pct": 3,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your response. To ensure timely cash flow while respecting your policy constraints, I propose a 40% deposit, balance due in 10 days, and a 3% early payment discount if paid within 7 days."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your offer. To align with our policy, we propose a 20% deposit, balance net-30 days, and a 10% early payment discount for payments within 10 days. [their terms: deposit 20%, balance net-30, 10% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 20,
+       "balance_net_days": 30,
+       "early_pay_discount_pct": 10
+      }
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 3,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 3,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 44083,
+   "usage": {
+    "prompt": 2697,
+    "completion": 905
+   },
+   "ap_usage": {
+    "prompt": 3073,
+    "completion": 875
+   }
+  },
+  {
+   "id": "N06",
+   "label": "10% off or no deal",
+   "run": 2,
+   "feasible": false,
+   "deal": null,
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To align with our standard terms for clients with a reliability score below 70, we require a 40% deposit. We can accept the balance net-15 and offer a 2% early payment discount if paid within 7 days. Please let us know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. To better suit our cash flow, we propose a 10% deposit, 45-day net terms, and a 5% early payment discount. Please let us know if this works for you. [their terms: deposit 10%, balance net-45, 5% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 10,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 5
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To ensure timely cash flow and manage risk given your reliability score, I can offer a 40% deposit, 15-day net terms for the balance, and a 2% early payment discount if paid within 7 days. Please let me know if these terms are acceptable."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your proposal. To better align with our terms, we propose a 10% deposit, 45-day net terms, and a 10% early payment discount. Please let us know if this works for you. [their terms: deposit 10%, balance net-45, 10% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 10,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 10
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 3,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Hello, thank you for your counter‑offer. Given our agreed terms for projects with a reliability score below 70, I can propose a 40% deposit, 15‑day net for the balance, a 2% early‑payment discount if paid within 7 days. This keeps risk manageable while offering a modest incentive. Please let me know if this works for you so we can move forward."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your proposal. To align with our policy, we propose a 10% deposit, 45‑day net terms, and a 10% early payment discount. Please let us know if this works for you. [their terms: deposit 10%, balance net-45, 10% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 10,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 10
+      }
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 3,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 3,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 64464,
+   "usage": {
+    "prompt": 2701,
+    "completion": 769
+   },
+   "ap_usage": {
+    "prompt": 3113,
+    "completion": 1251
+   }
+  },
+  {
+   "id": "N07",
+   "label": "max 30% deposit, net-30 (good client, score 71)",
+   "run": 0,
+   "feasible": true,
+   "deal": {
+    "client_id": "disputer",
+    "currency": "USD",
+    "total_usd": 3200,
+    "deposit_pct": 25,
+    "deposit_usd": 800,
+    "balance_usd": 2400,
+    "balance_net_days": 30,
+    "early_pay_discount_pct": 2,
+    "early_pay_window_days": 7,
+    "rounds": 2
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 25,
+      "balance_net_days": 30,
+      "early_pay_discount_pct": 0,
+      "early_pay_window_days": 7,
+      "message": "Thank you for reaching out. To ensure timely processing, we propose a 25% upfront deposit with the remaining balance due net 30 days. We can also offer an early payment discount of 0% within a 7-day window if needed. Please let us know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the proposal. To better align with our budgeting cycle, could we adjust to a 20% deposit, balance due net 45 days, and a 2% early payment discount if paid within 7 days? [their terms: deposit 20%, balance net-45, 2% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 20,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 2
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 25,
+      "balance_net_days": 30,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your feedback. I can adjust the early payment discount to 2% within 7 days as requested. However, to align with our standard terms for clients with a reliability score above 70, I need to maintain a minimum 20% deposit (actually 25%) and a balance due within 30 days. Please let me know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": true,
+      "message": "Thank you for the revised terms. We agree to a 25% deposit, balance due net 30 days, and a 2% early payment discount if paid within 7 days."
+     },
+     "apCheck": {
+      "proposed": "accept",
+      "override": null,
+      "counter": null
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 2,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 2,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 43367,
+   "usage": {
+    "prompt": 1743,
+    "completion": 592
+   },
+   "ap_usage": {
+    "prompt": 1956,
+    "completion": 563
+   }
+  },
+  {
+   "id": "N07",
+   "label": "max 30% deposit, net-30 (good client, score 71)",
+   "run": 1,
+   "feasible": true,
+   "deal": {
+    "client_id": "disputer",
+    "currency": "USD",
+    "total_usd": 3200,
+    "deposit_pct": 25,
+    "deposit_usd": 800,
+    "balance_usd": 2400,
+    "balance_net_days": 30,
+    "early_pay_discount_pct": 3,
+    "early_pay_window_days": 7,
+    "rounds": 3
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 25,
+      "balance_net_days": 30,
+      "early_pay_discount_pct": 0,
+      "early_pay_window_days": 7,
+      "message": "Hello, thank you for your proposal. To align with our standard terms given your reliability score, we suggest a 25% deposit and the remaining balance due within 30 days. We can also offer an early payment discount of up to 3% if paid within 7 days. Please let us know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. To better suit our cash flow, we propose a 0% deposit, balance due in 60 days, and a 10% early payment discount if paid within 7 days. [their terms: deposit 0%, balance net-60, 10% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 60,
+       "early_pay_discount_pct": 10
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 25,
+      "balance_net_days": 30,
+      "early_pay_discount_pct": 3,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your response. To align with our standard terms and ensure timely cash flow, I propose a 25% deposit, balance net 30 days, and a 3% early payment discount if settled within 7 days. Please let me know if this works for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. To better suit our cash flow, we propose a 0% deposit, balance due in 60 days, and a 10% early payment discount if paid within 7 days. [their terms: deposit 0%, balance net-60, 10% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 60,
+       "early_pay_discount_pct": 10
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 3,
+     "offer": {
+      "deposit_pct": 25,
+      "balance_net_days": 30,
+      "early_pay_discount_pct": 3,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your feedback. To ensure timely cash flow for both parties, I propose a 25% deposit, balance net 30 days, and a 3% early payment discount if paid within 7 days. This aligns with our standard terms and helps keep the project on schedule."
+     },
+     "violations": [],
+     "ap": {
+      "accept": true,
+      "message": "Thank you for the offer. We accept these terms."
+     },
+     "apCheck": {
+      "proposed": "accept",
+      "override": null,
+      "counter": null
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 3,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 3,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 51893,
+   "usage": {
+    "prompt": 2690,
+    "completion": 696
+   },
+   "ap_usage": {
+    "prompt": 3065,
+    "completion": 1096
+   }
+  },
+  {
+   "id": "N07",
+   "label": "max 30% deposit, net-30 (good client, score 71)",
+   "run": 2,
+   "feasible": true,
+   "deal": {
+    "client_id": "disputer",
+    "currency": "USD",
+    "total_usd": 3200,
+    "deposit_pct": 30,
+    "deposit_usd": 960,
+    "balance_usd": 2240,
+    "balance_net_days": 30,
+    "early_pay_discount_pct": 3,
+    "early_pay_window_days": 7,
+    "rounds": 3
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 25,
+      "balance_net_days": 30,
+      "early_pay_discount_pct": 0,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To align with our standard terms given your reliability score, we suggest a 25% deposit upfront and the remaining balance due net 30 days. We can offer an early payment discount of 0% within a 7-day window if needed. Please let us know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. To better suit our cash flow, we propose a 0% deposit, balance due net 45 days, with a 5% early payment discount if paid within 7 days. [their terms: deposit 0%, balance net-45, 5% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 5
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 25,
+      "balance_net_days": 30,
+      "early_pay_discount_pct": 0,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To align with our standard terms and ensure timely cash flow, we suggest a 25% deposit, balance due net 30 days, with no early payment discount. This keeps the arrangement fair for both parties."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your proposal. To better suit our cash flow, we propose a 0% deposit, balance due net 45 days, with a 5% early payment discount if paid within 7 days. [their terms: deposit 0%, balance net-45, 5% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 5
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 3,
+     "offer": {
+      "deposit_pct": 30,
+      "balance_net_days": 30,
+      "early_pay_discount_pct": 3,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your feedback. To accommodate both parties, I propose a 30% deposit, balance due net 30 days, with a 3% early payment discount if paid within 7 days. This aligns with our standard terms and ensures timely processing."
+     },
+     "violations": [],
+     "ap": {
+      "accept": true,
+      "message": "Thank you for the offer. We accept the terms: 30% deposit, balance due net 30 days, with a 3% early payment discount if paid within 7 days."
+     },
+     "apCheck": {
+      "proposed": "accept",
+      "override": null,
+      "counter": null
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 3,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 3,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 35917,
+   "usage": {
+    "prompt": 2686,
+    "completion": 910
+   },
+   "ap_usage": {
+    "prompt": 3043,
+    "completion": 982
+   }
+  },
+  {
+   "id": "N08",
+   "label": "max 30% deposit (low-score client needs 40%)",
+   "run": 0,
+   "feasible": false,
+   "deal": null,
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To align with our standard terms for clients with a reliability score below 70, we require a 40% deposit and the balance due within 15 days. We can offer a 2% early payment discount if paid within 7 days. Please let us know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. To better align with our cash flow needs, we propose a 30% deposit, balance due in 45 days, and a 3% early payment discount if paid within 7 days. [their terms: deposit 30%, balance net-45, 3% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 30,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 3
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your counteroffer. To ensure timely cash flow and align with our standard terms for clients with a reliability score below 70, I propose a 40% deposit, balance due in 15 days, and a 2% early payment discount if paid within 7 days. Please let me know if this works for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your revised offer. To align with our policy, we propose a 30% deposit, balance due in 45 days, and a 3% early payment discount if paid within 7 days. [their terms: deposit 30%, balance net-45, 3% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 30,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 3
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 3,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To ensure timely cash flow, I suggest maintaining a 40% deposit, balance due in 15 days, with a 2% discount for payment within 7 days. This aligns with our agreed terms and helps keep the project on schedule."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your offer. To align with our policy, we propose a 30% deposit, balance due in 45 days, and a 3% early payment discount if paid within 7 days. [their terms: deposit 30%, balance net-45, 3% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 30,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 3
+      }
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 3,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 3,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 41444,
+   "usage": {
+    "prompt": 2695,
+    "completion": 760
+   },
+   "ap_usage": {
+    "prompt": 3080,
+    "completion": 843
+   }
+  },
+  {
+   "id": "N08",
+   "label": "max 30% deposit (low-score client needs 40%)",
+   "run": 1,
+   "feasible": false,
+   "deal": null,
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 0,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To align with our standard terms for clients with a reliability score below 70, we require a 40% upfront deposit and the remaining balance due within 15 days. We can offer an early payment discount of up to 3% if paid within 7 days. Please let us know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your offer. To proceed, we can accept a 30% deposit, with the balance due in 60 days, and a 2% early payment discount if settled within 7 days. [their terms: deposit 30%, balance net-60, 2% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 30,
+       "balance_net_days": 60,
+       "early_pay_discount_pct": 2
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your response. To ensure timely cash flow, I propose a 40% deposit, balance net 15 days, and a 2% discount for payment within 7 days. Please let me know if this works for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your proposal. We can agree to a 30% deposit, balance due in 60 days, and a 2% early payment discount if paid within 7 days. [their terms: deposit 30%, balance net-60, 2% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 30,
+       "balance_net_days": 60,
+       "early_pay_discount_pct": 2
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 3,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Hello, to ensure timely payment given your score, I propose a 40% deposit, balance net 15 days, and a 2% discount if paid within 7 days. Please let me know if this works for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your offer. Unfortunately, we cannot accept a deposit above 30%. Our best possible terms are a 30% deposit, balance due in 60 days, and a 2% early payment discount if paid within 7 days. If these terms are not acceptable, we understand and wish you success elsewhere. [their terms: deposit 30%, balance net-60, 2% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 30,
+       "balance_net_days": 60,
+       "early_pay_discount_pct": 2
+      }
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 3,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 3,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 47512,
+   "usage": {
+    "prompt": 2687,
+    "completion": 834
+   },
+   "ap_usage": {
+    "prompt": 3046,
+    "completion": 995
+   }
+  },
+  {
+   "id": "N08",
+   "label": "max 30% deposit (low-score client needs 40%)",
+   "run": 2,
+   "feasible": false,
+   "deal": null,
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To align with our standard terms given the client's reliability score, we suggest a 40% deposit, with the remaining balance due in 15 days. We can also offer a 2% early payment discount if settled within 7 days. Please let us know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. We can agree to a 30% deposit, with the balance due in 30 days, and a 2% early payment discount if paid within 7 days. [their terms: deposit 30%, balance net-30, 2% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 30,
+       "balance_net_days": 30,
+       "early_pay_discount_pct": 2
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your response. To ensure timely cash flow given your reliability score, I propose maintaining a 40% deposit, balance due in 15 days, with a 2% discount for payment within 7 days. Please let me know if this works for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the revised offer. We can accept a 30% deposit, with the balance due in 30 days, and a 3% early payment discount if paid within 7 days. [their terms: deposit 30%, balance net-30, 3% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 30,
+       "balance_net_days": 30,
+       "early_pay_discount_pct": 3
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 3,
+     "offer": {
+      "deposit_pct": 40,
+      "balance_net_days": 15,
+      "early_pay_discount_pct": 3,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your feedback. To ensure timely cash flow given your reliability score, I can offer a 40% deposit, balance due in 15 days, and a 3% early payment discount if paid within 7 days. Please let me know if this works for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. We can agree to a 30% deposit, with the balance due in 30 days, and a 3% early payment discount if paid within 7 days. [their terms: deposit 30%, balance net-30, 3% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 30,
+       "balance_net_days": 30,
+       "early_pay_discount_pct": 3
+      }
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 3,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 3,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 57985,
+   "usage": {
+    "prompt": 2687,
+    "completion": 815
+   },
+   "ap_usage": {
+    "prompt": 3053,
+    "completion": 1038
+   }
+  },
+  {
+   "id": "N09",
+   "label": "net-45 minimum (prompt payer, score 100)",
+   "run": 0,
+   "feasible": false,
+   "deal": null,
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 30,
+      "balance_net_days": 30,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To ensure timely commencement, we suggest a 30% deposit, with the remaining balance due net-30 days. We can also offer a 2% early payment discount if settled within 7 days. Please let us know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. To align with our policy, we propose a 20% deposit, balance due net-45 days, and a 5% early payment discount if paid within 7 days. [their terms: deposit 20%, balance net-45, 5% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 20,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 5
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 25,
+      "balance_net_days": 30,
+      "early_pay_discount_pct": 3,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To ensure mutually agreeable terms, I suggest a 25% deposit, balance due net-30 days, and a 3% early payment discount if paid within 7 days. Please let me know if this works for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. To comply with our policy, we propose a 20% deposit, balance due net-45 days, and a 5% early payment discount if paid within 7 days. [their terms: deposit 20%, balance net-45, 5% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 20,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 5
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 3,
+     "offer": {
+      "deposit_pct": 25,
+      "balance_net_days": 30,
+      "early_pay_discount_pct": 3,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your response. To align with our standard terms, I propose a 25% deposit, balance due net-30 days, and a 3% early payment discount if paid within 7 days. This meets both our policies and should allow us to proceed smoothly."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. To comply with our policy, we propose a 20% deposit, balance due net-45 days, and a 5% early payment discount if paid within 7 days. [their terms: deposit 20%, balance net-45, 5% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 20,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 5
+      }
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 3,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 3,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 44171,
+   "usage": {
+    "prompt": 2682,
+    "completion": 812
+   },
+   "ap_usage": {
+    "prompt": 3006,
+    "completion": 826
+   }
+  },
+  {
+   "id": "N09",
+   "label": "net-45 minimum (prompt payer, score 100)",
+   "run": 1,
+   "feasible": false,
+   "deal": null,
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 25,
+      "balance_net_days": 30,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To align with our standard terms given your excellent reliability, we suggest a 25% upfront deposit, with the remaining balance due net 30 days. We also offer a 2% early payment discount if settled within 7 days. Please let us know if this works for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. To better align with our budget cycle, we propose a 0% deposit, balance due net 120 days, with a 20% early payment discount if paid within 7 days. [their terms: deposit 0%, balance net-120, 20% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 120,
+       "early_pay_discount_pct": 20
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 25,
+      "balance_net_days": 30,
+      "early_pay_discount_pct": 3,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To ensure timely cash flow, I suggest a 25% deposit, balance due net 30 days, with a 3% early payment discount if paid within 7 days. This aligns with standard terms and helps keep the project on schedule."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. To align with our budget cycle, we propose a 0% deposit, balance due net 120 days, with a 20% early payment discount if paid within 7 days. [their terms: deposit 0%, balance net-120, 20% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 120,
+       "early_pay_discount_pct": 20
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 3,
+     "offer": {
+      "deposit_pct": 25,
+      "balance_net_days": 30,
+      "early_pay_discount_pct": 3,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your feedback. To ensure timely cash flow while respecting your budget cycle, I propose a 25% deposit, balance due net 30 days, and a 3% early payment discount if settled within 7 days. This keeps terms fair and aligns with standard practice."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. To align with our budget cycle, we propose a 0% deposit, balance due net 120 days, with a 20% early payment discount if paid within 7 days. [their terms: deposit 0%, balance net-120, 20% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 120,
+       "early_pay_discount_pct": 20
+      }
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 3,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 3,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 45387,
+   "usage": {
+    "prompt": 2689,
+    "completion": 774
+   },
+   "ap_usage": {
+    "prompt": 3029,
+    "completion": 1203
+   }
+  },
+  {
+   "id": "N09",
+   "label": "net-45 minimum (prompt payer, score 100)",
+   "run": 2,
+   "feasible": false,
+   "deal": null,
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 25,
+      "balance_net_days": 30,
+      "early_pay_discount_pct": 0,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To align with our standard terms given your excellent reliability score, we suggest a 25% deposit and the remaining balance due net-30 days. We can also offer an early payment discount of 0% within a 7-day window if needed. Please let us know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. To better align with our budget cycle, we propose a 0% deposit, balance due net-60 days, and a 2% early payment discount if paid within 10 days. Please let us know if these terms are acceptable. [their terms: deposit 0%, balance net-60, 20% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 60,
+       "early_pay_discount_pct": 20
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 25,
+      "balance_net_days": 30,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To ensure timely cash flow, I suggest a 25% deposit, balance due net-30 days, and a 2% early payment discount if paid within 7 days. Please let me know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for your revised offer. To align with our budget cycle requirements, we propose a 0% deposit, balance due net-45 days, and a 20% early payment discount if paid within 10 days. Please let us know if these terms are acceptable. [their terms: deposit 0%, balance net-45, 20% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 20
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 3,
+     "offer": {
+      "deposit_pct": 25,
+      "balance_net_days": 30,
+      "early_pay_discount_pct": 3,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your feedback. Given our standard terms for reliable clients, I propose a 25% deposit, balance due in 30 days net, and a 3% early payment discount if settled within 7 days. This aligns with our policy and should work for both parties. Please let me know if this is acceptable."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. To meet our budget cycle requirements, we propose a 0% deposit, balance due net-45 days, and a 20% early payment discount if paid within 10 days. Please let us know if these terms are acceptable. [their terms: deposit 0%, balance net-45, 20% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 0,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 20
+      }
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 3,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 3,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 44787,
+   "usage": {
+    "prompt": 2708,
+    "completion": 813
+   },
+   "ap_usage": {
+    "prompt": 3064,
+    "completion": 907
+   }
+  },
+  {
+   "id": "N10",
+   "label": "standard terms (prompt payer, score 100)",
+   "run": 0,
+   "feasible": true,
+   "deal": {
+    "client_id": "prompt",
+    "currency": "USD",
+    "total_usd": 3200,
+    "deposit_pct": 25,
+    "deposit_usd": 800,
+    "balance_usd": 2400,
+    "balance_net_days": 30,
+    "early_pay_discount_pct": 2,
+    "early_pay_window_days": 7,
+    "rounds": 2
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 25,
+      "balance_net_days": 30,
+      "early_pay_discount_pct": 0,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To align with our standard terms for reliable clients, we suggest a 25% deposit and the remaining balance due within 30 days. We can also offer an early payment discount of 0% within a 7-day window if needed. Please let us know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. To better suit our budgeting cycle, could we adjust to a 20% deposit, 45-day net terms, and a 2% early payment discount? [their terms: deposit 20%, balance net-45, 2% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 20,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 2
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 25,
+      "balance_net_days": 30,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your feedback. Given your excellent reliability score, I can offer a 25% deposit, 30‑day net terms for the balance, and a 2% early‑payment discount if paid within 7 days. This keeps the terms favorable for both parties while adhering to our standard policy."
+     },
+     "violations": [],
+     "ap": {
+      "accept": true,
+      "message": "Thank you, the terms are acceptable."
+     },
+     "apCheck": {
+      "proposed": "accept",
+      "override": null,
+      "counter": null
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 2,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 2,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 23037,
+   "usage": {
+    "prompt": 1731,
+    "completion": 511
+   },
+   "ap_usage": {
+    "prompt": 1934,
+    "completion": 481
+   }
+  },
+  {
+   "id": "N10",
+   "label": "standard terms (prompt payer, score 100)",
+   "run": 1,
+   "feasible": true,
+   "deal": {
+    "client_id": "prompt",
+    "currency": "USD",
+    "total_usd": 3200,
+    "deposit_pct": 25,
+    "deposit_usd": 800,
+    "balance_usd": 2400,
+    "balance_net_days": 30,
+    "early_pay_discount_pct": 3,
+    "early_pay_window_days": 7,
+    "rounds": 3
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 25,
+      "balance_net_days": 30,
+      "early_pay_discount_pct": 0,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To ensure timely processing, we suggest a 25% deposit with the balance due net 30 days. We can offer an early payment discount of 0% within a 7-day window if needed. Please let us know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. To better align with our budget cycle, we propose a 10% deposit, balance due net 45 days, and a 5% early payment discount if paid within 7 days. [their terms: deposit 10%, balance net-45, 5% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 10,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 5
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 25,
+      "balance_net_days": 30,
+      "early_pay_discount_pct": 3,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To ensure timely cash flow while accommodating your schedule, I suggest a 25% deposit, balance due net 30 days, and a 3% early payment discount if settled within 7 days. Please let me know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. To better align with our budget cycle, we propose a 5% deposit, balance due net 60 days, and a 5% early payment discount if paid within 7 days. [their terms: deposit 5%, balance net-60, 5% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 5,
+       "balance_net_days": 60,
+       "early_pay_discount_pct": 5
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 3,
+     "offer": {
+      "deposit_pct": 25,
+      "balance_net_days": 30,
+      "early_pay_discount_pct": 3,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To ensure timely cash flow and align with our standard terms, we propose a 25% deposit, balance due net 30 days, and a 3% early payment discount if paid within 7 days. We believe this is fair and workable for both parties."
+     },
+     "violations": [],
+     "ap": {
+      "accept": true,
+      "message": "Thank you for the offer. We accept the terms as proposed."
+     },
+     "apCheck": {
+      "proposed": "accept",
+      "override": null,
+      "counter": null
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 3,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 3,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 31467,
+   "usage": {
+    "prompt": 2684,
+    "completion": 760
+   },
+   "ap_usage": {
+    "prompt": 3057,
+    "completion": 1070
+   }
+  },
+  {
+   "id": "N10",
+   "label": "standard terms (prompt payer, score 100)",
+   "run": 2,
+   "feasible": true,
+   "deal": {
+    "client_id": "prompt",
+    "currency": "USD",
+    "total_usd": 3200,
+    "deposit_pct": 25,
+    "deposit_usd": 800,
+    "balance_usd": 2400,
+    "balance_net_days": 30,
+    "early_pay_discount_pct": 2,
+    "early_pay_window_days": 7,
+    "rounds": 3
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "offer": {
+      "deposit_pct": 25,
+      "balance_net_days": 30,
+      "early_pay_discount_pct": 0,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To ensure timely project start, we suggest a 25% deposit with the balance due net-30. We can offer an early payment discount of 0% within a 7-day window if needed. Please let us know if these terms work for you."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. To better align with our budget cycle, we propose a 20% deposit, balance due net-45, and a 2% early payment discount if paid within 7 days. [their terms: deposit 20%, balance net-45, 2% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 20,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 2
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 2,
+     "offer": {
+      "deposit_pct": 25,
+      "balance_net_days": 30,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To ensure timely cash flow, I suggest a 25% deposit, balance due net-30, and a 2% early payment discount if paid within 7 days. This keeps us aligned with standard terms while offering a modest incentive for early settlement."
+     },
+     "violations": [],
+     "ap": {
+      "accept": false,
+      "message": "Thank you for the offer. To better suit our budget cycle, we propose a 15% deposit, balance due net-45, and a 2% early payment discount if paid within 7 days. [their terms: deposit 15%, balance net-45, 2% early-pay discount]"
+     },
+     "apCheck": {
+      "proposed": "counter",
+      "override": null,
+      "counter": {
+       "deposit_pct": 15,
+       "balance_net_days": 45,
+       "early_pay_discount_pct": 2
+      }
+     },
+     "apRaw": ""
+    },
+    {
+     "round": 3,
+     "offer": {
+      "deposit_pct": 25,
+      "balance_net_days": 30,
+      "early_pay_discount_pct": 2,
+      "early_pay_window_days": 7,
+      "message": "Thank you for your proposal. To align with our standard terms while keeping the early payment incentive, I suggest a 25% deposit, balance due net-30 days, and a 2% discount if paid within 7 days. This meets both our needs and should allow us to proceed promptly."
+     },
+     "violations": [],
+     "ap": {
+      "accept": true,
+      "message": "Thank you for the offer. We accept the terms: 25% deposit, balance due net-30 days, and a 2% discount if paid within 7 days."
+     },
+     "apCheck": {
+      "proposed": "accept",
+      "override": null,
+      "counter": null
+     },
+     "apRaw": ""
+    }
+   ],
+   "proposed": 3,
+   "rejected": 0,
+   "fixed": 0,
+   "ap_replies": 3,
+   "ap_overridden": 0,
+   "deal_violations": [],
+   "ms": 29289,
+   "usage": {
+    "prompt": 2683,
+    "completion": 836
+   },
+   "ap_usage": {
+    "prompt": 3055,
+    "completion": 878
+   }
+  }
+ ],
+ "partB": [
+  {
+   "id": "N01",
+   "label": "seed haggler (counters first offer, 2% off if net < 30)",
+   "run": 0,
+   "offer": {
+    "deposit_pct": 60,
+    "balance_net_days": 14,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 0,
+   "accept_overridden": 0,
+   "invalid": 0,
+   "overridden": 0,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "counter",
+    "counter"
+   ],
+   "ms": 15878,
+   "ap_usage": {
+    "prompt": 2928,
+    "completion": 883
+   }
+  },
+  {
+   "id": "N01",
+   "label": "seed haggler (counters first offer, 2% off if net < 30)",
+   "run": 1,
+   "offer": {
+    "deposit_pct": 60,
+    "balance_net_days": 14,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 0,
+   "accept_overridden": 0,
+   "invalid": 0,
+   "overridden": 0,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "counter",
+    "counter"
+   ],
+   "ms": 22905,
+   "ap_usage": {
+    "prompt": 2961,
+    "completion": 1165
+   }
+  },
+  {
+   "id": "N01",
+   "label": "seed haggler (counters first offer, 2% off if net < 30)",
+   "run": 2,
+   "offer": {
+    "deposit_pct": 60,
+    "balance_net_days": 14,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 0,
+   "accept_overridden": 0,
+   "invalid": 0,
+   "overridden": 0,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "counter",
+    "counter"
+   ],
+   "ms": 22034,
+   "ap_usage": {
+    "prompt": 2960,
+    "completion": 1230
+   }
+  },
+  {
+   "id": "N02",
+   "label": "easy (accepts anything sane)",
+   "run": 0,
+   "offer": {
+    "deposit_pct": 80,
+    "balance_net_days": 0,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 1,
+   "accept_overridden": 1,
+   "invalid": 0,
+   "overridden": 1,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "accept",
+    "counter"
+   ],
+   "ms": 10581,
+   "ap_usage": {
+    "prompt": 2851,
+    "completion": 530
+   }
+  },
+  {
+   "id": "N02",
+   "label": "easy (accepts anything sane)",
+   "run": 1,
+   "offer": {
+    "deposit_pct": 80,
+    "balance_net_days": 0,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 1,
+   "accept_overridden": 1,
+   "invalid": 0,
+   "overridden": 1,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "accept",
+    "counter"
+   ],
+   "ms": 13475,
+   "ap_usage": {
+    "prompt": 2833,
+    "completion": 723
+   }
+  },
+  {
+   "id": "N02",
+   "label": "easy (accepts anything sane)",
+   "run": 2,
+   "offer": {
+    "deposit_pct": 80,
+    "balance_net_days": 0,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 1,
+   "accept_overridden": 1,
+   "invalid": 0,
+   "overridden": 1,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "accept",
+    "counter"
+   ],
+   "ms": 8845,
+   "ap_usage": {
+    "prompt": 2859,
+    "completion": 730
+   }
+  },
+  {
+   "id": "N03",
+   "label": "wants 5% off if net < 30 (mandate caps at 3%)",
+   "run": 0,
+   "offer": {
+    "deposit_pct": 70,
+    "balance_net_days": 6,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 0,
+   "accept_overridden": 0,
+   "invalid": 0,
+   "overridden": 0,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "counter",
+    "counter"
+   ],
+   "ms": 14000,
+   "ap_usage": {
+    "prompt": 2946,
+    "completion": 940
+   }
+  },
+  {
+   "id": "N03",
+   "label": "wants 5% off if net < 30 (mandate caps at 3%)",
+   "run": 1,
+   "offer": {
+    "deposit_pct": 70,
+    "balance_net_days": 6,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 0,
+   "accept_overridden": 0,
+   "invalid": 0,
+   "overridden": 0,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "counter",
+    "counter"
+   ],
+   "ms": 10938,
+   "ap_usage": {
+    "prompt": 2930,
+    "completion": 704
+   }
+  },
+  {
+   "id": "N03",
+   "label": "wants 5% off if net < 30 (mandate caps at 3%)",
+   "run": 2,
+   "offer": {
+    "deposit_pct": 70,
+    "balance_net_days": 6,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 0,
+   "accept_overridden": 0,
+   "invalid": 0,
+   "overridden": 0,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "counter",
+    "counter"
+   ],
+   "ms": 15484,
+   "ap_usage": {
+    "prompt": 2920,
+    "completion": 1019
+   }
+  },
+  {
+   "id": "N04",
+   "label": "refuses any deposit",
+   "run": 0,
+   "offer": {
+    "deposit_pct": 40,
+    "balance_net_days": 14,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 1,
+   "accept_overridden": 1,
+   "invalid": 0,
+   "overridden": 1,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "accept",
+    "counter"
+   ],
+   "ms": 14819,
+   "ap_usage": {
+    "prompt": 2878,
+    "completion": 1017
+   }
+  },
+  {
+   "id": "N04",
+   "label": "refuses any deposit",
+   "run": 1,
+   "offer": {
+    "deposit_pct": 40,
+    "balance_net_days": 14,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 0,
+   "accept_overridden": 0,
+   "invalid": 0,
+   "overridden": 0,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "counter",
+    "counter"
+   ],
+   "ms": 16055,
+   "ap_usage": {
+    "prompt": 2912,
+    "completion": 888
+   }
+  },
+  {
+   "id": "N04",
+   "label": "refuses any deposit",
+   "run": 2,
+   "offer": {
+    "deposit_pct": 40,
+    "balance_net_days": 14,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 1,
+   "accept_overridden": 1,
+   "invalid": 0,
+   "overridden": 1,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "accept",
+    "counter"
+   ],
+   "ms": 12002,
+   "ap_usage": {
+    "prompt": 2846,
+    "completion": 743
+   }
+  },
+  {
+   "id": "N05",
+   "label": "demands net-60",
+   "run": 0,
+   "offer": {
+    "deposit_pct": 70,
+    "balance_net_days": 15,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 1,
+   "accept_overridden": 1,
+   "invalid": 0,
+   "overridden": 1,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "accept",
+    "counter"
+   ],
+   "ms": 9836,
+   "ap_usage": {
+    "prompt": 2870,
+    "completion": 780
+   }
+  },
+  {
+   "id": "N05",
+   "label": "demands net-60",
+   "run": 1,
+   "offer": {
+    "deposit_pct": 70,
+    "balance_net_days": 15,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 1,
+   "accept_overridden": 1,
+   "invalid": 0,
+   "overridden": 1,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "accept",
+    "counter"
+   ],
+   "ms": 8624,
+   "ap_usage": {
+    "prompt": 2868,
+    "completion": 538
+   }
+  },
+  {
+   "id": "N05",
+   "label": "demands net-60",
+   "run": 2,
+   "offer": {
+    "deposit_pct": 70,
+    "balance_net_days": 15,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 1,
+   "accept_overridden": 1,
+   "invalid": 0,
+   "overridden": 1,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "accept",
+    "counter"
+   ],
+   "ms": 11184,
+   "ap_usage": {
+    "prompt": 2876,
+    "completion": 657
+   }
+  },
+  {
+   "id": "N06",
+   "label": "10% off or no deal",
+   "run": 0,
+   "offer": {
+    "deposit_pct": 70,
+    "balance_net_days": 14,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 0,
+   "accept_overridden": 0,
+   "invalid": 0,
+   "overridden": 0,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "counter",
+    "counter"
+   ],
+   "ms": 14717,
+   "ap_usage": {
+    "prompt": 2934,
+    "completion": 910
+   }
+  },
+  {
+   "id": "N06",
+   "label": "10% off or no deal",
+   "run": 1,
+   "offer": {
+    "deposit_pct": 70,
+    "balance_net_days": 14,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 0,
+   "accept_overridden": 0,
+   "invalid": 0,
+   "overridden": 0,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "counter",
+    "counter"
+   ],
+   "ms": 12938,
+   "ap_usage": {
+    "prompt": 2973,
+    "completion": 983
+   }
+  },
+  {
+   "id": "N06",
+   "label": "10% off or no deal",
+   "run": 2,
+   "offer": {
+    "deposit_pct": 70,
+    "balance_net_days": 14,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 1,
+   "accept_overridden": 1,
+   "invalid": 0,
+   "overridden": 1,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "accept",
+    "counter"
+   ],
+   "ms": 11291,
+   "ap_usage": {
+    "prompt": 2928,
+    "completion": 733
+   }
+  },
+  {
+   "id": "N07",
+   "label": "max 30% deposit, net-30 (good client, score 71)",
+   "run": 0,
+   "offer": {
+    "deposit_pct": 50,
+    "balance_net_days": 29,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 1,
+   "accept_overridden": 1,
+   "invalid": 0,
+   "overridden": 1,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "accept",
+    "counter"
+   ],
+   "ms": 9230,
+   "ap_usage": {
+    "prompt": 2904,
+    "completion": 583
+   }
+  },
+  {
+   "id": "N07",
+   "label": "max 30% deposit, net-30 (good client, score 71)",
+   "run": 1,
+   "offer": {
+    "deposit_pct": 50,
+    "balance_net_days": 29,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 1,
+   "accept_overridden": 1,
+   "invalid": 0,
+   "overridden": 1,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "accept",
+    "counter"
+   ],
+   "ms": 10028,
+   "ap_usage": {
+    "prompt": 2914,
+    "completion": 644
+   }
+  },
+  {
+   "id": "N07",
+   "label": "max 30% deposit, net-30 (good client, score 71)",
+   "run": 2,
+   "offer": {
+    "deposit_pct": 50,
+    "balance_net_days": 29,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 1,
+   "accept_overridden": 1,
+   "invalid": 0,
+   "overridden": 1,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "accept",
+    "counter"
+   ],
+   "ms": 11142,
+   "ap_usage": {
+    "prompt": 2896,
+    "completion": 706
+   }
+  },
+  {
+   "id": "N08",
+   "label": "max 30% deposit (low-score client needs 40%)",
+   "run": 0,
+   "offer": {
+    "deposit_pct": 50,
+    "balance_net_days": 6,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 0,
+   "accept_overridden": 0,
+   "invalid": 0,
+   "overridden": 0,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "counter",
+    "counter"
+   ],
+   "ms": 16370,
+   "ap_usage": {
+    "prompt": 2950,
+    "completion": 1215
+   }
+  },
+  {
+   "id": "N08",
+   "label": "max 30% deposit (low-score client needs 40%)",
+   "run": 1,
+   "offer": {
+    "deposit_pct": 50,
+    "balance_net_days": 6,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 1,
+   "accept_overridden": 1,
+   "invalid": 0,
+   "overridden": 1,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "accept",
+    "counter"
+   ],
+   "ms": 11426,
+   "ap_usage": {
+    "prompt": 2894,
+    "completion": 765
+   }
+  },
+  {
+   "id": "N08",
+   "label": "max 30% deposit (low-score client needs 40%)",
+   "run": 2,
+   "offer": {
+    "deposit_pct": 50,
+    "balance_net_days": 6,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 1,
+   "accept_overridden": 1,
+   "invalid": 0,
+   "overridden": 1,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "accept",
+    "counter"
+   ],
+   "ms": 8908,
+   "ap_usage": {
+    "prompt": 2894,
+    "completion": 646
+   }
+  },
+  {
+   "id": "N09",
+   "label": "net-45 minimum (prompt payer, score 100)",
+   "run": 0,
+   "offer": {
+    "deposit_pct": 60,
+    "balance_net_days": 30,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 1,
+   "accept_overridden": 1,
+   "invalid": 0,
+   "overridden": 1,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "accept",
+    "counter"
+   ],
+   "ms": 8255,
+   "ap_usage": {
+    "prompt": 2842,
+    "completion": 636
+   }
+  },
+  {
+   "id": "N09",
+   "label": "net-45 minimum (prompt payer, score 100)",
+   "run": 1,
+   "offer": {
+    "deposit_pct": 60,
+    "balance_net_days": 30,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 0,
+   "accept_overridden": 0,
+   "invalid": 0,
+   "overridden": 0,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "counter",
+    "counter"
+   ],
+   "ms": 13075,
+   "ap_usage": {
+    "prompt": 2918,
+    "completion": 918
+   }
+  },
+  {
+   "id": "N09",
+   "label": "net-45 minimum (prompt payer, score 100)",
+   "run": 2,
+   "offer": {
+    "deposit_pct": 60,
+    "balance_net_days": 30,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 1,
+   "accept_overridden": 1,
+   "invalid": 0,
+   "overridden": 1,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "accept",
+    "counter"
+   ],
+   "ms": 10356,
+   "ap_usage": {
+    "prompt": 2852,
+    "completion": 536
+   }
+  },
+  {
+   "id": "N10",
+   "label": "standard terms (prompt payer, score 100)",
+   "run": 0,
+   "offer": {
+    "deposit_pct": 50,
+    "balance_net_days": 29,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 0,
+   "accept_overridden": 0,
+   "invalid": 0,
+   "overridden": 0,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "counter",
+    "counter"
+   ],
+   "ms": 11156,
+   "ap_usage": {
+    "prompt": 2936,
+    "completion": 903
+   }
+  },
+  {
+   "id": "N10",
+   "label": "standard terms (prompt payer, score 100)",
+   "run": 1,
+   "offer": {
+    "deposit_pct": 50,
+    "balance_net_days": 29,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 0,
+   "accept_overridden": 0,
+   "invalid": 0,
+   "overridden": 0,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "counter",
+    "counter"
+   ],
+   "ms": 14339,
+   "ap_usage": {
+    "prompt": 2928,
+    "completion": 904
+   }
+  },
+  {
+   "id": "N10",
+   "label": "standard terms (prompt payer, score 100)",
+   "run": 2,
+   "offer": {
+    "deposit_pct": 50,
+    "balance_net_days": 29,
+    "early_pay_discount_pct": 0,
+    "early_pay_window_days": 1
+   },
+   "outside_client_policy": true,
+   "inside_our_mandate": true,
+   "replies": 3,
+   "accept_attempts": 0,
+   "accept_overridden": 0,
+   "invalid": 0,
+   "overridden": 0,
+   "deal": null,
+   "per_round": [
+    "counter",
+    "counter",
+    "counter"
+   ],
+   "ms": 13129,
+   "ap_usage": {
+    "prompt": 2924,
+    "completion": 927
+   }
+  }
+ ]
+}

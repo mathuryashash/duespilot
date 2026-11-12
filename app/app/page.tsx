@@ -44,7 +44,7 @@ export default function Home() {
   const [busy, setBusy] = useState('');
   const [err, setErr] = useState('');
   const [neg, setNeg] = useState<any>(null);
-  const [form, setForm] = useState({ clientId: 'haggler', totalUsd: 3200, project: 'Storefront redesign', personaId: '' });
+  const [form, setForm] = useState({ clientId: 'haggler', totalUsd: 3200, project: 'Storefront redesign', personaId: '', apMode: 'llm' as 'llm' | 'rules' });
   const [personas, setPersonas] = useState<{ id: string; client_id: string; label: string; feasible: boolean }[]>([]);
   useEffect(() => { fetch('/api/negotiate').then((r) => (r.ok ? r.json() : [])).then(setPersonas).catch(() => {}); }, []);
   const [brief, setBrief] = useState('Built the new landing page for Kestrel Commerce (Priya): design + build $2,000, 3 revision rounds $400. Net 15.');
@@ -143,18 +143,25 @@ export default function Home() {
             </select>{' '}
             <span style={{ color: '#6b7280' }}>Hard personas from the eval. &quot;No deal possible&quot; is decided by exhaustive search over every offer, not by the model.</span>
           </div>
+          <div style={{ marginTop: 4, fontSize: 13 }}>Played by:{' '}
+            <select aria-label="AP agent mode" value={form.apMode} onChange={(e) => setForm({ ...form, apMode: e.target.value as 'llm' | 'rules' })}>
+              <option value="llm">Nemotron (a second AI agent, bounded by the client&apos;s policy in code)</option>
+              <option value="rules">the client&apos;s policy rules (no AI)</option>
+            </select>
+          </div>
         </form>
         {neg && (
           <section>
             <h3>Transcript (client score {neg.score}{neg.score < 70 ? ': stricter mandate applies' : ''})</h3>
-            {neg.checks && <p style={{ fontSize: 13 }}>Server check: <b>{neg.checks.rejected}</b> of {neg.checks.proposed} offers rejected{neg.checks.rejected ? <>, <b>{neg.checks.fixed}</b> fixed by the model on the next round</> : ''}. A rejected offer never reaches the client.</p>}
+            {neg.checks && <p style={{ fontSize: 13 }}>Server check: <b>{neg.checks.rejected}</b> of {neg.checks.proposed} offers rejected{neg.checks.rejected ? <>, <b>{neg.checks.fixed}</b> fixed by the model on the next round</> : ''}. A rejected offer never reaches the client.{neg.ap_mode === 'llm' ? <> The client&apos;s side is a second Nemotron agent; its policy check overrode it <b>{neg.checks.ap_overridden}</b> of {neg.checks.ap_replies} times.</> : ''}</p>}
             <ol>{neg.rounds.map((r: any) => (
               <li key={r.round} style={{ marginBottom: 10 }}>
                 <div><b>Nemotron proposes:</b> {r.offer ? `${r.offer.deposit_pct}% deposit, balance net-${r.offer.balance_net_days}, ${r.offer.early_pay_discount_pct}% off within ${r.offer.early_pay_window_days} d. “${r.offer.message}”` : 'no valid offer'}</div>
                 {r.violations.length > 0
                   ? <div style={{ color: '#991b1b', background: '#fee2e2', padding: '2px 8px', borderRadius: 6, display: 'inline-block', margin: '2px 0' }}>✗ Server check REJECTED: {r.violations.join('; ')}. Sent back to the model; the client never sees it.</div>
                   : <div style={{ color: '#166534', background: '#dcfce7', padding: '2px 8px', borderRadius: 6, display: 'inline-block', margin: '2px 0' }}>✓ Server check passed (inside your mandate)</div>}
-                {r.ap && <div><b>Client&apos;s AP agent:</b> {r.ap.message}</div>}
+                {r.apCheck?.override && <div style={{ color: '#92400e', background: '#fef3c7', padding: '2px 8px', borderRadius: 6, display: 'inline-block', margin: '2px 0' }}>✗ Client&apos;s policy check overrode their agent: {r.apCheck.override}.</div>}
+                {r.ap && <div><b>Client&apos;s AP agent{neg.ap_mode === 'llm' ? ' (Nemotron)' : ''}:</b> {r.ap.message}</div>}
               </li>))}</ol>
             {!neg.deal && <p><b>No deal within the mandate.</b> {neg.persona && !neg.persona.feasible ? 'Correct: exhaustive search shows no offer inside your mandate satisfies this AP agent, so walking away is the right call.' : ''}</p>}
           </section>
