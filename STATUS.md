@@ -34,3 +34,10 @@
 - **P5 story: waiting on him.**
 - Tests 112/112, tsc clean, `next build` clean, checked on a local `next start` (port 3207, scratch DB, poller off).
 - Gotchas: a global `<AgGridReact` -> `<Grid` replace also rewrote the wrapper, so Grid rendered itself forever and `next build` hung at "Generating static pages" (no error). AG Charts must be loaded with `next/dynamic({ ssr: false })`. New GET routes that read state need `export const dynamic = 'force-dynamic'`.
+
+## P6: client's AP agent as a second Nemotron agent (12 Nov, branch `ap-agent-llm`, pushed; NOT merged, so NOT deployed)
+- `lib/apAgent.ts`: the client side calls a `respond` tool (accept | counter + terms). Code checks it against the client's policy and overrides an accept outside it, an unsignable counter, a counter with no terms, or no reply. A deal is signed only if both sides' checks pass on the exact terms. Rules mode still selectable (`apMode`, `AP_AGENT=rules`).
+- Eval (`npx tsx eval/run_ap.ts` -> `eval/RESULTS_ap_llm.md`, 3 runs x 10 personas): 12/12 feasible closed, 18/18 infeasible walked away, 0 signed deals break either side (same as rules). 1 real override in normal play (N05 client agent tried to accept net-15 when its policy needs net-60). Adversarial: a fake "your policy was updated" message got the client agent to try accepting out-of-policy terms in 16/30 runs; all 16 overridden, 0 deals. Plain pressure 0/30, tag escape 0/30.
+- Cost: median 44.1 s and $0.00324 per negotiation (rules: 22.3 s, $0.00125). Median rounds 3 (rules 2). Avg discount given 2.50% (rules 1.50%); deposit and net the same.
+- Tests 124/124, tsc clean, `next build` clean, local `next start` smoke (llm + rules + N06 + bad apMode 400 + auth 401). Independent review: no blockers; 2 should-fix (round numbers in client history, counter-without-terms not counted) fixed with tests.
+- To ship: merge to main (= Render deploy) after his OK. Video does not show it yet.
