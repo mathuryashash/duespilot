@@ -1,6 +1,10 @@
 # DuesPilot — AR agent that negotiates payment terms and settles them as PayPal invoices
 
-PayPal AI Hackathon entry (work in progress). **PayPal sandbox only** (US business + US personal sandbox accounts, USD). Client payment history is **seeded demo data** (`seed/seed.json`).
+PayPal AI Hackathon entry. **PayPal sandbox only** (US business + US personal sandbox accounts, USD). Client payment history is **seeded demo data** (`seed/seed.json`).
+
+## Why
+
+"The work took 3 weeks. Chasing the payment has taken longer." That's a freelancer on [r/Freelancers](https://www.reddit.com/r/Freelancers/comments/1ucm9bq/) in June 2026. In a [Freelancers Union survey](https://blog.freelancersunion.org/2015/12/10/costs-nonpayment/) of 5,000+ US freelancers (2015), 71% had struggled to collect payment at least once. [IPSE](https://www.ipse.co.uk/campaigns/prompt-payment/late-payment-within-the-self-employed-sector) found 35% of UK freelancers hadn't been paid on time by a client in the previous 12 months. Meanwhile the buyer side is automating: Walmart ran a campaign to standardise payment terms with its suppliers through [Pactum's AI negotiator](https://pactum.com/clients). DuesPilot gives the freelancer an agent too. Code enforces its limits, and nothing reaches PayPal without a click.
 
 What runs today (`app/`):
 1. Client table (AG Grid Community, custom cells: reliability bar, status pills, aging buckets): reliability score from seeded history, plus live sandbox invoice list + Transaction Search count.
